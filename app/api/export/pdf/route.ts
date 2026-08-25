@@ -3,7 +3,7 @@ import { readFile } from "fs/promises";
 import path from "path";
 import { PDFDocument, rgb, type PDFFont } from "pdf-lib";
 import fontkit from "@pdf-lib/fontkit";
-import { supabaseServer } from "@/lib/supabase/server";
+import { createClient } from "@/lib/supabase/server";
 import type { TransportDocumentData } from "@/lib/types";
 
 export const runtime = "nodejs";
@@ -44,11 +44,20 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ error: "Chýba parameter 'id'." }, { status: 400 });
   }
 
-  const supabase = supabaseServer();
+  const supabase = createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) {
+    return NextResponse.json({ error: "Nie si prihlásený." }, { status: 401 });
+  }
+
   const { data: record, error } = await supabase
     .from("transport_documents")
     .select("id, created_at, file_name, data")
     .eq("id", id)
+    .eq("user_id", user.id)
     .single();
 
   if (error || !record) {

@@ -1,11 +1,20 @@
 import { NextRequest, NextResponse } from "next/server";
 import { randomUUID } from "crypto";
-import { supabaseServer, STORAGE_BUCKET } from "@/lib/supabase/server";
+import { createClient, STORAGE_BUCKET } from "@/lib/supabase/server";
 import { TransportDocumentSchema } from "@/lib/extraction-schema";
 
 export const runtime = "nodejs";
 
 export async function POST(req: NextRequest) {
+  const supabase = createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) {
+    return NextResponse.json({ error: "Nie si prihlásený." }, { status: 401 });
+  }
+
   const formData = await req.formData();
   const file = formData.get("file");
   const rawData = formData.get("data");
@@ -25,10 +34,10 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  const supabase = supabaseServer();
   const id = randomUUID();
   const extension = file.name.split(".").pop() || "bin";
-  const filePath = `${id}/${file.name || `document.${extension}`}`;
+  // Prefix so path so Storage RLS can scope access to the owner's folder.
+  const filePath = `${user.id}/${id}/${file.name || `document.${extension}`}`;
 
   const buffer = Buffer.from(await file.arrayBuffer());
   const { error: uploadError } = await supabase.storage
@@ -47,6 +56,7 @@ export async function POST(req: NextRequest) {
     .from("transport_documents")
     .insert({
       id,
+      user_id: user.id,
       file_name: file.name,
       file_path: filePath,
       mime_type: file.type,
@@ -65,10 +75,21 @@ export async function POST(req: NextRequest) {
 }
 
 export async function GET() {
-  const supabase = supabaseServer();
+  const supabase = createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) {
+    return NextResponse.json({ error: "Nie si prihlásený." }, { status: 401 });
+  }
+
+  // RLS already scopes this to the caller's own rows — the explicit filter
+  // just makes that intent visible in the code.
   const { data, error } = await supabase
     .from("transport_documents")
     .select("id, created_at, file_name, mime_type, data")
+    .eq("user_id", user.id)
     .order("created_at", { ascending: false });
 
   if (error) {

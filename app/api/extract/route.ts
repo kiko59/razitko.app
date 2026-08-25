@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { extractTransportDocument } from "@/lib/anthropic";
+import { createClient } from "@/lib/supabase/server";
 
 export const runtime = "nodejs";
 
@@ -13,6 +14,15 @@ const ALLOWED_TYPES = new Set([
 const MAX_SIZE_BYTES = 15 * 1024 * 1024;
 
 export async function POST(req: NextRequest) {
+  const supabase = createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) {
+    return NextResponse.json({ error: "Nie si prihlásený." }, { status: 401 });
+  }
+
   const formData = await req.formData();
   const file = formData.get("file");
 
