@@ -1,6 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
 import { extractTransportDocument } from "@/lib/anthropic";
-import { createClient } from "@/lib/supabase/server";
+import {
+  resolveApiCaller,
+  enforceMonthlyLimit,
+  incrementDocumentUsage,
+} from "@/lib/subscription";
 
 export const runtime = "nodejs";
 
@@ -14,14 +18,12 @@ const ALLOWED_TYPES = new Set([
 const MAX_SIZE_BYTES = 15 * 1024 * 1024;
 
 export async function POST(req: NextRequest) {
-  const supabase = createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  const caller = await resolveApiCaller(req);
+  if ("error" in caller) return caller.error;
+  const { userId, plan } = caller;
 
-  if (!user) {
-    return NextResponse.json({ error: "Nie si prihlásený." }, { status: 401 });
-  }
+  const limitError = await enforceMonthlyLimit(userId, plan);
+  if (limitError) return limitError;
 
   const formData = await req.formData();
   const file = formData.get("file");
@@ -53,6 +55,8 @@ export async function POST(req: NextRequest) {
       base64Data: buffer.toString("base64"),
       mimeType: file.type,
     });
+
+    await incrementDocumentUsage(userId);
 
     return NextResponse.json({ data });
   } catch (err) {

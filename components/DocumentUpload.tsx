@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef, useState } from "react";
+import Link from "next/link";
 import type { TransportDocumentData } from "@/lib/types";
 
 interface DocumentUploadProps {
@@ -20,10 +21,12 @@ export default function DocumentUpload({ onExtracted }: DocumentUploadProps) {
   const [isDragging, setIsDragging] = useState(false);
   const [isExtracting, setIsExtracting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [upgradeUrl, setUpgradeUrl] = useState<string | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
   async function handleFile(file: File) {
     setError(null);
+    setUpgradeUrl(null);
 
     if (!ACCEPTED_TYPES.includes(file.type)) {
       setError("Podporované sú len obrázky (JPEG, PNG, GIF, WebP) a PDF.");
@@ -46,6 +49,7 @@ export default function DocumentUpload({ onExtracted }: DocumentUploadProps) {
 
       if (!res.ok) {
         const body = await res.json().catch(() => null);
+        if (body?.upgradeUrl) setUpgradeUrl(body.upgradeUrl);
         throw new Error(body?.error || "Extrakcia dát zlyhala.");
       }
 
@@ -105,7 +109,19 @@ export default function DocumentUpload({ onExtracted }: DocumentUploadProps) {
           </>
         )}
       </div>
-      {error && <p className="mt-3 text-sm text-red-600">{error}</p>}
+      {error && (
+        <p className="mt-3 text-sm text-red-600">
+          {error}
+          {upgradeUrl && (
+            <>
+              {" "}
+              <Link href={upgradeUrl} className="underline">
+                Upgradovať plán
+              </Link>
+            </>
+          )}
+        </p>
+      )}
     </div>
   );
 }

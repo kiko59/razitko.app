@@ -53,3 +53,71 @@ create policy "Users can manage their own files"
   for all
   using (bucket_id = 'documents' and (storage.foldername(name))[1] = auth.uid()::text)
   with check (bucket_id = 'documents' and (storage.foldername(name))[1] = auth.uid()::text);
+
+-- ============================================================================
+-- Predplatné (Stripe): jeden riadok na používateľa.
+-- ============================================================================
+
+create table if not exists public.profiles (
+  id uuid primary key references auth.users(id) on delete cascade,
+  email text,
+  subscription_plan text not null default 'none'
+    check (subscription_plan in ('none', 'solo', 'fleet', 'pro')),
+  stripe_customer_id text unique,
+  stripe_subscription_id text,
+  documents_used_this_month integer not null default 0,
+  current_period_start timestamptz,
+  api_key text not null unique default encode(gen_random_bytes(24), 'hex'),
+  created_at timestamptz not null default now()
+);
+
+alter table public.profiles enable row level security;
+
+drop policy if exists "Users can view their own profile" on public.profiles;
+
+-- Len SELECT pre vlastníka riadku. Zámerne žiadna INSERT/UPDATE/DELETE
+-- politika pre bežných používateľov — subscription_plan, usage a Stripe ID
+-- smie meniť výhradne service role (Stripe webhook, /api/extract), aby si
+-- používateľ nemohol cez klientský update sám priradiť platený plán.
+create policy "Users can view their own profile"
+  on public.profiles
+  for select
+  using (auth.uid() = id);
+
+-- Pri registrácii nového auth.users riadku automaticky založí profil s
+-- plánom 'none'. Vzor podľa oficiálnej Supabase dokumentácie — beží ako
+-- SECURITY DEFINER, takže nepotrebuje vlastnícke práva na auth.users.
+create or replace function public.handle_new_user()
+returns trigger
+language plpgsql
+security definer set search_path = public
+as $$
+begin
+  insert into public.profiles (id, email)
+  values (new.id, new.email)
+  on conflict (id) do nothing;
+  return new;
+end;
+$$;
+
+drop trigger if exists on_auth_user_created on auth.users;
+create trigger on_auth_user_created
+  after insert on auth.users
+  for each row execute function public.handle_new_user();
+
+-- Backfill pre používateľov založených pred touto migráciou.
+insert into public.profiles (id, email)
+select id, email from auth.users
+on conflict (id) do nothing;
+
+-- Atomický increment počtu vyťažených dokumentov (predchádza race condition
+-- pri read-modify-write). Volané zo service role klienta v /api/extract.
+create or replace function public.increment_document_usage(p_user_id uuid)
+returns void
+language sql
+security definer set search_path = public
+as $$
+  update public.profiles
+  set documents_used_this_month = documents_used_this_month + 1
+  where id = p_user_id;
+$$;
