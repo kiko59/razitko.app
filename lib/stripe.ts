@@ -17,6 +17,12 @@ export function getStripe(): Stripe {
       apiVersion: "2025-02-24.acacia",
       timeout: 20000,
       maxNetworkRetries: 2,
+      // The default Node https-based client is known to fail with
+      // "An error occurred with our connection to Stripe" on some
+      // serverless platforms (Vercel's Lambda runtime included) — its
+      // connection/socket handling doesn't play well with cold-started,
+      // short-lived containers. The fetch-based client sidesteps that.
+      httpClient: Stripe.createFetchHttpClient(),
     });
   }
   return stripeClient;
