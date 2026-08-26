@@ -20,7 +20,7 @@ function periodStartIso(subscription: Stripe.Subscription): string | null {
 
 export async function POST(req: NextRequest) {
   const signature = req.headers.get("stripe-signature");
-  const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
+  const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET?.trim();
 
   if (!signature || !webhookSecret) {
     return NextResponse.json({ error: "Chýba webhook konfigurácia." }, { status: 500 });
