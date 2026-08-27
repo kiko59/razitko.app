@@ -1,37 +1,52 @@
-import { createClient } from "@/lib/supabase/server";
 import PricingCards from "@/components/PricingCards";
-import type { SubscriptionPlan } from "@/lib/plans";
+import PricingFaq from "@/components/PricingFaq";
+import PricingComparison from "@/components/PricingComparison";
 
-export default async function PricingPage() {
-  const supabase = createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-
-  let currentPlan: SubscriptionPlan | null = null;
-
-  if (user) {
-    const { data: profile } = await supabase
-      .from("profiles")
-      .select("subscription_plan")
-      .eq("id", user.id)
-      .single();
-    currentPlan = (profile?.subscription_plan as SubscriptionPlan) ?? "none";
-  }
-
+export default function PricingPage() {
   return (
-    <main className="mx-auto max-w-5xl px-4 py-16">
-      <div className="text-center">
-        <h1 className="text-3xl font-semibold text-slate-900">Cenník</h1>
-        <p className="mt-2 text-sm text-slate-600">
-          Vyber si plán podľa veľkosti tvojej flotily. Kedykoľvek môžeš zmeniť
-          alebo zrušiť.
+    <main className="mx-auto max-w-5xl px-4 py-16 sm:py-24">
+      <div>
+        <p className="text-xs font-medium uppercase tracking-wide text-primary">Cenník</p>
+        <h1 className="mt-2 max-w-2xl text-3xl font-semibold text-foreground sm:text-4xl">
+          Solo, Fleet alebo Pro — CMR extrakcia pre každú flotilu.
+        </h1>
+        <p className="mt-4 max-w-2xl text-sm text-muted-foreground sm:text-base">
+          Tri plány pre jeden CMR sken, hromadný upload aj API integráciu. Ceny
+          v EUR, mesačne, bez DPH. Vyber si podľa veľkosti flotily — kedykoľvek
+          môžeš zmeniť alebo zrušiť.
         </p>
       </div>
 
-      <div className="mt-10">
-        <PricingCards isLoggedIn={!!user} currentPlan={currentPlan} />
-      </div>
+      <section id="faq" className="mt-16 scroll-mt-16">
+        <p className="text-xs font-medium uppercase tracking-wide text-primary">
+          FAQ k plánom
+        </p>
+        <h2 className="mt-2 text-xl font-semibold text-foreground sm:text-2xl">
+          Odpovede pred výberom plánu
+        </h2>
+        <div className="mt-6">
+          <PricingFaq />
+        </div>
+      </section>
+
+      <section className="mt-16">
+        <p className="text-xs font-medium uppercase tracking-wide text-primary">
+          Porovnanie plánov
+        </p>
+        <h2 className="mt-2 text-xl font-semibold text-foreground sm:text-2xl">
+          Solo vs Fleet vs Pro — čo dostanete v každom pláne.
+        </h2>
+        <div className="mt-6">
+          <PricingComparison />
+        </div>
+      </section>
+
+      <section className="mt-16">
+        <PricingCards />
+        <p className="mt-8 text-center text-sm text-muted-foreground">
+          Pre enterprise a individuálne ceny nás kontaktujte.
+        </p>
+      </section>
     </main>
   );
 }

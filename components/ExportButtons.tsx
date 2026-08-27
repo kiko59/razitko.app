@@ -8,14 +8,14 @@ export default function ExportButtons({ documentId }: ExportButtonsProps) {
       <a
         href={`/api/export/pdf?id=${documentId}`}
         download
-        className="rounded-md border border-slate-300 bg-white px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50"
+        className="rounded-md border border-border bg-secondary px-4 py-2 text-sm font-medium text-secondary-foreground hover:bg-accent"
       >
         Stiahnuť PDF
       </a>
       <a
         href={`/api/documents/${documentId}?download=1`}
         download
-        className="rounded-md border border-slate-300 bg-white px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50"
+        className="rounded-md border border-border bg-secondary px-4 py-2 text-sm font-medium text-secondary-foreground hover:bg-accent"
       >
         Stiahnuť JSON
       </a>

@@ -29,7 +29,7 @@ export default async function HomePage() {
         plan={plan}
         documentsUsed={profile?.documents_used_this_month ?? 0}
       />
-      <p className="mt-4 text-sm text-slate-600">
+      <p className="mt-4 text-sm text-muted-foreground">
         Nahraj prepravný dokument (CMR, BOL, dodací list) a automaticky z
         neho vyťaž kľúčové údaje.
       </p>

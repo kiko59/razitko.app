@@ -79,8 +79,8 @@ export default function DocumentUpload({ onExtracted }: DocumentUploadProps) {
         onClick={() => inputRef.current?.click()}
         className={`flex cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed p-10 text-center transition-colors ${
           isDragging
-            ? "border-blue-500 bg-blue-50"
-            : "border-slate-300 bg-white hover:border-slate-400"
+            ? "border-primary bg-primary/10"
+            : "border-border bg-card hover:border-muted-foreground"
         }`}
       >
         <input
@@ -95,22 +95,22 @@ export default function DocumentUpload({ onExtracted }: DocumentUploadProps) {
           }}
         />
         {isExtracting ? (
-          <p className="text-sm text-slate-600">
+          <p className="text-sm text-muted-foreground">
             Spracúvam dokument cez Claude…
           </p>
         ) : (
           <>
-            <p className="text-sm font-medium text-slate-700">
+            <p className="text-sm font-medium text-foreground">
               Presuň sem CMR, BOL alebo dodací list
             </p>
-            <p className="mt-1 text-xs text-slate-500">
+            <p className="mt-1 text-xs text-muted-foreground">
               alebo klikni pre výber súboru (JPEG, PNG, PDF — max 15 MB)
             </p>
           </>
         )}
       </div>
       {error && (
-        <p className="mt-3 text-sm text-red-600">
+        <p className="mt-3 text-sm text-destructive">
           {error}
           {upgradeUrl && (
             <>

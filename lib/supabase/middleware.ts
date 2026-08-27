@@ -2,7 +2,13 @@ import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
 
 // No auth required at all.
-const PUBLIC_PATHS = ["/login", "/auth/callback", "/pricing", "/api/webhooks/stripe"];
+const PUBLIC_PATHS = [
+  "/login",
+  "/signup",
+  "/auth/callback",
+  "/pricing",
+  "/api/webhooks/stripe",
+];
 
 // Auth required, but an active subscription plan is not — these are exactly
 // the paths a signed-in user with plan 'none' needs to reach in order to

@@ -25,28 +25,28 @@ export default async function BillingPage() {
 
   return (
     <main className="mx-auto max-w-lg px-4 py-16">
-      <Link href="/" className="text-sm text-blue-600 hover:underline">
+      <Link href="/" className="text-sm text-primary hover:underline">
         ← Späť do appky
       </Link>
 
-      <h1 className="mt-4 text-2xl font-semibold text-slate-900">Predplatné</h1>
+      <h1 className="mt-4 text-2xl font-semibold text-foreground">Predplatné</h1>
 
-      <div className="mt-6 rounded-lg border border-slate-200 bg-white p-6">
+      <div className="mt-6 rounded-lg border border-border bg-card p-6">
         {planConfig ? (
           <>
-            <p className="text-sm text-slate-500">Aktuálny plán</p>
-            <p className="text-lg font-semibold text-slate-900">
+            <p className="text-sm text-muted-foreground">Aktuálny plán</p>
+            <p className="text-lg font-semibold text-foreground">
               {planConfig.name} — {planConfig.priceEur} € / mesiac
             </p>
-            <p className="mt-2 text-sm text-slate-600">
+            <p className="mt-2 text-sm text-muted-foreground">
               {profile?.documents_used_this_month ?? 0} /{" "}
               {planConfig.monthlyLimit ?? "∞"} dokumentov využitých tento mesiac
             </p>
           </>
         ) : (
-          <p className="text-sm text-slate-600">
+          <p className="text-sm text-muted-foreground">
             Nemáš aktívne predplatné.{" "}
-            <Link href="/pricing" className="text-blue-600 hover:underline">
+            <Link href="/pricing" className="text-primary hover:underline">
               Vyber si plán
             </Link>
             .

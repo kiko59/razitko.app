@@ -1,93 +1,60 @@
-"use client";
+import Link from "next/link";
+import { PLAN_ORDER, PLANS } from "@/lib/plans";
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
-import { PLAN_ORDER, PLANS, type PlanId, type SubscriptionPlan } from "@/lib/plans";
-
-interface PricingCardsProps {
-  isLoggedIn: boolean;
-  currentPlan: SubscriptionPlan | null;
-}
-
-export default function PricingCards({ isLoggedIn, currentPlan }: PricingCardsProps) {
-  const router = useRouter();
-  const [loadingPlan, setLoadingPlan] = useState<PlanId | null>(null);
-  const [error, setError] = useState<string | null>(null);
-
-  async function handleSelect(plan: PlanId) {
-    setError(null);
-
-    if (!isLoggedIn) {
-      router.push(`/login?redirectTo=/pricing`);
-      return;
-    }
-
-    setLoadingPlan(plan);
-    try {
-      const res = await fetch("/api/stripe/checkout", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ plan }),
-      });
-
-      const body = await res.json().catch(() => null);
-      if (!res.ok) throw new Error(body?.error || "Nepodarilo sa spustiť platbu.");
-
-      window.location.href = body.url;
-    } catch (err) {
-      setError(err instanceof Error ? err.message : "Nastala neznáma chyba.");
-      setLoadingPlan(null);
-    }
-  }
-
+export default function PricingCards() {
   return (
-    <div>
-      {error && <p className="mb-6 text-center text-sm text-red-600">{error}</p>}
-      <div className="grid gap-6 sm:grid-cols-3">
-        {PLAN_ORDER.map((planId) => {
-          const plan = PLANS[planId];
-          const isCurrent = currentPlan === planId;
+    <div className="grid gap-6 sm:grid-cols-3">
+      {PLAN_ORDER.map((planId) => {
+        const plan = PLANS[planId];
+        const isFeatured = planId === "fleet";
 
-          return (
-            <div
-              key={planId}
-              className={`flex flex-col rounded-lg border p-6 ${
-                planId === "fleet"
-                  ? "border-blue-500 shadow-sm"
-                  : "border-slate-200 bg-white"
+        return (
+          <div
+            key={planId}
+            className={`relative flex flex-col rounded-lg border bg-card p-6 ${
+              isFeatured ? "border-primary" : "border-border"
+            }`}
+          >
+            {isFeatured && (
+              <span className="absolute -top-3 left-6 rounded-full bg-primary px-3 py-1 text-xs font-medium text-primary-foreground">
+                Najpopulárnejší
+              </span>
+            )}
+
+            <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
+              {plan.trucks}
+            </p>
+            <h2 className="mt-1 text-lg font-semibold text-foreground">{plan.name}</h2>
+
+            <p className="mt-4">
+              <span className="text-3xl font-bold text-foreground">{plan.priceEur} €</span>
+              <span className="text-sm text-muted-foreground"> bez DPH / mesiac</span>
+            </p>
+
+            <ol className="mt-6 flex-1 space-y-3 text-sm text-muted-foreground">
+              {plan.features.map((feature, i) => (
+                <li key={feature} className="flex gap-3">
+                  <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-secondary text-xs font-medium text-secondary-foreground">
+                    {i + 1}
+                  </span>
+                  <span>{feature}</span>
+                </li>
+              ))}
+            </ol>
+
+            <Link
+              href={`/signup?tier=${planId}`}
+              className={`mt-6 w-full rounded-md px-4 py-2 text-center text-sm font-medium transition-colors ${
+                isFeatured
+                  ? "bg-primary text-primary-foreground hover:opacity-90"
+                  : "bg-secondary text-secondary-foreground hover:bg-accent"
               }`}
             >
-              <h2 className="text-lg font-semibold text-slate-900">{plan.name}</h2>
-              <p className="mt-1">
-                <span className="text-3xl font-bold text-slate-900">{plan.priceEur} €</span>
-                <span className="text-sm text-slate-500"> / mesiac</span>
-              </p>
-
-              <ul className="mt-6 flex-1 space-y-2 text-sm text-slate-600">
-                {plan.features.map((feature) => (
-                  <li key={feature} className="flex gap-2">
-                    <span className="text-blue-600">✓</span>
-                    <span>{feature}</span>
-                  </li>
-                ))}
-              </ul>
-
-              <button
-                type="button"
-                disabled={loadingPlan !== null || isCurrent}
-                onClick={() => handleSelect(planId)}
-                className="mt-6 w-full rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-60"
-              >
-                {isCurrent
-                  ? "Tvoj aktuálny plán"
-                  : loadingPlan === planId
-                    ? "Presmerúvam na Stripe…"
-                    : "Vybrať plán"}
-              </button>
-            </div>
-          );
-        })}
-      </div>
+              Vybrať {plan.name}
+            </Link>
+          </div>
+        );
+      })}
     </div>
   );
 }

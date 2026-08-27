@@ -26,11 +26,11 @@ export default function BillingClient() {
         type="button"
         onClick={handleOpenPortal}
         disabled={isLoading}
-        className="rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-60"
+        className="rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-60"
       >
         {isLoading ? "Otváram Stripe portál…" : "Spravovať predplatné"}
       </button>
-      {error && <p className="mt-3 text-sm text-red-600">{error}</p>}
+      {error && <p className="mt-3 text-sm text-destructive">{error}</p>}
     </div>
   );
 }
