@@ -94,6 +94,23 @@ export async function POST(req: NextRequest) {
   } catch (err) {
     console.error("Stripe checkout session creation failed:", err);
     const message = err instanceof Error ? err.message : "Neznáma chyba.";
+
+    // TEMPORARY diagnostics — server-side log only, never in the response
+    // — to find out what STRIPE_SECRET_KEY actually looks like in this
+    // environment. Masked (length/prefix/suffix, not the full value) but
+    // still only ever printed to Vercel's function logs. Remove once the
+    // root cause of the production-only connection error is confirmed.
+    const rawKey = process.env.STRIPE_SECRET_KEY ?? "";
+    console.error("Stripe key diagnostics:", {
+      keyLength: rawKey.length,
+      keyPrefix: rawKey.slice(0, 10),
+      keySuffix: rawKey.slice(-4),
+      hasWhitespace: /\s/.test(rawKey),
+      hasNonAscii: /[^\x20-\x7e]/.test(rawKey),
+      nodeVersion: process.version,
+      region: process.env.VERCEL_REGION ?? null,
+    });
+
     return NextResponse.json(
       { error: `Nepodarilo sa vytvoriť Stripe checkout: ${message}` },
       { status: 500 },
