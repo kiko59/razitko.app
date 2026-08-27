@@ -5,7 +5,7 @@ import { createClient } from "@/lib/supabase/server";
 // exchange), then sends the user on to the app.
 export async function GET(request: NextRequest) {
   const code = request.nextUrl.searchParams.get("code");
-  const redirectTo = request.nextUrl.searchParams.get("redirectTo") || "/";
+  const redirectTo = request.nextUrl.searchParams.get("redirectTo") || "/app";
 
   if (code) {
     const supabase = createClient();

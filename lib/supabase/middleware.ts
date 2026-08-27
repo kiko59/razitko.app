@@ -3,6 +3,7 @@ import { NextResponse, type NextRequest } from "next/server";
 
 // No auth required at all.
 const PUBLIC_PATHS = [
+  "/",
   "/login",
   "/signup",
   "/auth/callback",
@@ -79,7 +80,7 @@ export async function updateSession(request: NextRequest) {
   }
 
   if (user && pathname === "/login") {
-    return NextResponse.redirect(new URL("/", request.url));
+    return NextResponse.redirect(new URL("/app", request.url));
   }
 
   if (user && !isPublic && !matchesPath(pathname, PLAN_EXEMPT_PATHS)) {

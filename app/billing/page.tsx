@@ -25,7 +25,7 @@ export default async function BillingPage() {
 
   return (
     <main className="mx-auto max-w-lg px-4 py-16">
-      <Link href="/" className="text-sm text-primary hover:underline">
+      <Link href="/app" className="text-sm text-primary hover:underline">
         ← Späť do appky
       </Link>
 
