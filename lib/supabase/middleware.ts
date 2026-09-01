@@ -14,7 +14,12 @@ const PUBLIC_PATHS = [
 // Auth required, but an active subscription plan is not — these are exactly
 // the paths a signed-in user with plan 'none' needs to reach in order to
 // ever get a plan in the first place (or manage a cancelled one).
-const PLAN_EXEMPT_PATHS = ["/billing", "/api/stripe/checkout", "/api/stripe/portal"];
+const PLAN_EXEMPT_PATHS = [
+  "/billing",
+  "/api/stripe/checkout",
+  "/api/stripe/portal",
+  "/checkout/confirm",
+];
 
 // Authenticates itself and must be reachable with either a Supabase session
 // cookie (our own web UI) or an `Authorization: Bearer <api_key>` header
