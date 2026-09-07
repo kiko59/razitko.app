@@ -1,5 +1,15 @@
 import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
+import { resolveLocale } from "@/i18n/config";
+
+// Middleware runs on the Edge runtime — no next/headers cookies() here, and
+// no next-intl request context (that's wired up per-page via i18n/request.ts).
+// Just enough to translate the two strings this file actually returns.
+async function getMiddlewareMessages(request: NextRequest) {
+  const locale = resolveLocale(request.cookies.get("NEXT_LOCALE")?.value);
+  const messages = (await import(`../../messages/${locale}.json`)).default;
+  return messages.errors as { notLoggedIn: string; noSubscription: string };
+}
 
 // No auth required at all.
 const PUBLIC_PATHS = [
@@ -77,7 +87,8 @@ export async function updateSession(request: NextRequest) {
 
   if (!user && !isPublic) {
     if (pathname.startsWith("/api")) {
-      return NextResponse.json({ error: "Nie si prihlásený." }, { status: 401 });
+      const messages = await getMiddlewareMessages(request);
+      return NextResponse.json({ error: messages.notLoggedIn }, { status: 401 });
     }
     const loginUrl = new URL("/login", request.url);
     loginUrl.searchParams.set("redirectTo", pathname);
@@ -97,11 +108,9 @@ export async function updateSession(request: NextRequest) {
 
     if (!profile || profile.subscription_plan === "none") {
       if (pathname.startsWith("/api")) {
+        const messages = await getMiddlewareMessages(request);
         return NextResponse.json(
-          {
-            error: "Nemáš aktívne predplatné.",
-            upgradeUrl: "/pricing",
-          },
+          { error: messages.noSubscription, upgradeUrl: "/pricing" },
           { status: 402 },
         );
       }

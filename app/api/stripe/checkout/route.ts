@@ -3,11 +3,14 @@ import type Stripe from "stripe";
 import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { getStripe } from "@/lib/stripe";
+import { getApiTranslator, getLocaleFromCookies } from "@/lib/i18n-server";
 import { PLANS, isPlanId } from "@/lib/plans";
 
 export const runtime = "nodejs";
 
 export async function POST(req: NextRequest) {
+  const t = await getApiTranslator();
+
   try {
     const supabase = createClient();
     const {
@@ -15,20 +18,20 @@ export async function POST(req: NextRequest) {
     } = await supabase.auth.getUser();
 
     if (!user || !user.email) {
-      return NextResponse.json({ error: "Nie si prihlásený." }, { status: 401 });
+      return NextResponse.json({ error: t("errors.notLoggedIn") }, { status: 401 });
     }
 
     const body = await req.json().catch(() => null);
     const plan = body?.plan;
 
     if (!isPlanId(plan)) {
-      return NextResponse.json({ error: "Neplatný plán." }, { status: 400 });
+      return NextResponse.json({ error: t("errors.invalidPlan") }, { status: 400 });
     }
 
     const planConfig = PLANS[plan];
     if (!planConfig.priceId) {
       return NextResponse.json(
-        { error: `Chýba STRIPE_PRICE_${plan.toUpperCase()} v konfigurácii servera.` },
+        { error: t("errors.missingPriceConfig", { plan: plan.toUpperCase() }) },
         { status: 500 },
       );
     }
@@ -79,24 +82,23 @@ export async function POST(req: NextRequest) {
         metadata: { supabase_user_id: user.id, plan },
       },
       managed_payments: { enabled: false },
+      // Matches Stripe's own supported locale codes 1:1 with ours.
+      locale: getLocaleFromCookies(),
     };
 
     const session = await stripe.checkout.sessions.create(params);
 
     if (!session.url) {
-      return NextResponse.json(
-        { error: "Stripe nevrátil URL pre checkout." },
-        { status: 502 },
-      );
+      return NextResponse.json({ error: t("errors.stripeNoUrl") }, { status: 502 });
     }
 
     return NextResponse.json({ url: session.url });
   } catch (err) {
     console.error("Stripe checkout session creation failed:", err);
-    const message = err instanceof Error ? err.message : "Neznáma chyba.";
+    const message = err instanceof Error ? err.message : "Unknown error.";
 
     return NextResponse.json(
-      { error: `Nepodarilo sa vytvoriť Stripe checkout: ${message}` },
+      { error: t("errors.checkoutCreateFailed", { message }) },
       { status: 500 },
     );
   }

@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import type { TransportDocumentData, DocumentType } from "@/lib/types";
 
 interface ExtractedDataFormProps {
@@ -9,13 +10,6 @@ interface ExtractedDataFormProps {
   isSaving: boolean;
   isSaved: boolean;
 }
-
-const DOCUMENT_TYPES: { value: DocumentType; label: string }[] = [
-  { value: "CMR", label: "CMR" },
-  { value: "BOL", label: "Bill of Lading (BOL)" },
-  { value: "dodaci_list", label: "Dodací list" },
-  { value: "iny", label: "Iný" },
-];
 
 const FIELD_CLASS =
   "w-full rounded-md border border-input bg-background px-3 py-2 text-sm text-foreground focus:border-primary focus:outline-none focus:ring-1 focus:ring-ring";
@@ -49,6 +43,15 @@ export default function ExtractedDataForm({
   isSaving,
   isSaved,
 }: ExtractedDataFormProps) {
+  const t = useTranslations("form");
+
+  const documentTypes: { value: DocumentType; label: string }[] = [
+    { value: "CMR", label: t("docTypeCMR") },
+    { value: "BOL", label: t("docTypeBOL") },
+    { value: "dodaci_list", label: t("docTypeDodaciList") },
+    { value: "iny", label: t("docTypeIny") },
+  ];
+
   function update<K extends keyof TransportDocumentData>(
     key: K,
     value: TransportDocumentData[K],
@@ -61,7 +64,7 @@ export default function ExtractedDataForm({
       <div>
         <label className="block text-sm">
           <span className="mb-1 block font-medium text-foreground">
-            Typ dokumentu
+            {t("documentType")}
           </span>
           <select
             value={data.document_type}
@@ -70,9 +73,9 @@ export default function ExtractedDataForm({
             }
             className={FIELD_CLASS}
           >
-            {DOCUMENT_TYPES.map((t) => (
-              <option key={t.value} value={t.value}>
-                {t.label}
+            {documentTypes.map((docType) => (
+              <option key={docType.value} value={docType.value}>
+                {docType.label}
               </option>
             ))}
           </select>
@@ -81,30 +84,30 @@ export default function ExtractedDataForm({
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         <div className="space-y-3 rounded-md bg-secondary p-4">
-          <h3 className="text-sm font-semibold text-foreground">Odosielateľ</h3>
+          <h3 className="text-sm font-semibold text-foreground">{t("sender")}</h3>
           <TextField
-            label="Meno / názov"
+            label={t("nameLabel")}
             value={data.sender.name}
             onChange={(v) => update("sender", { ...data.sender, name: v })}
           />
           <TextField
-            label="Adresa"
+            label={t("address")}
             value={data.sender.address}
             onChange={(v) => update("sender", { ...data.sender, address: v })}
           />
         </div>
 
         <div className="space-y-3 rounded-md bg-secondary p-4">
-          <h3 className="text-sm font-semibold text-foreground">Príjemca</h3>
+          <h3 className="text-sm font-semibold text-foreground">{t("recipient")}</h3>
           <TextField
-            label="Meno / názov"
+            label={t("nameLabel")}
             value={data.recipient.name}
             onChange={(v) =>
               update("recipient", { ...data.recipient, name: v })
             }
           />
           <TextField
-            label="Adresa"
+            label={t("address")}
             value={data.recipient.address}
             onChange={(v) =>
               update("recipient", { ...data.recipient, address: v })
@@ -116,7 +119,7 @@ export default function ExtractedDataForm({
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         <label className="block text-sm">
           <span className="mb-1 block font-medium text-foreground">
-            Váha (kg)
+            {t("weight")}
           </span>
           <input
             type="number"
@@ -131,7 +134,7 @@ export default function ExtractedDataForm({
           />
         </label>
         <TextField
-          label="Referenčné číslo"
+          label={t("referenceNumber")}
           value={data.reference_number}
           onChange={(v) => update("reference_number", v)}
         />
@@ -140,7 +143,7 @@ export default function ExtractedDataForm({
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
         <label className="block text-sm">
           <span className="mb-1 block font-medium text-foreground">
-            Dátum nakládky
+            {t("loadingDate")}
           </span>
           <input
             type="date"
@@ -150,12 +153,12 @@ export default function ExtractedDataForm({
           />
         </label>
         <TextField
-          label="Miesto nakládky"
+          label={t("loadingPlace")}
           value={data.loading_place}
           onChange={(v) => update("loading_place", v)}
         />
         <TextField
-          label="Miesto vykládky"
+          label={t("unloadingPlace")}
           value={data.unloading_place}
           onChange={(v) => update("unloading_place", v)}
         />
@@ -163,7 +166,7 @@ export default function ExtractedDataForm({
 
       <label className="block text-sm">
         <span className="mb-1 block font-medium text-foreground">
-          Poznámky
+          {t("notes")}
         </span>
         <textarea
           value={data.notes ?? ""}
@@ -179,10 +182,10 @@ export default function ExtractedDataForm({
           disabled={isSaving}
           className="rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-60"
         >
-          {isSaving ? "Ukladám…" : isSaved ? "Uložené — uložiť znova" : "Uložiť dokument"}
+          {isSaving ? t("saving") : isSaved ? t("saveAgain") : t("save")}
         </button>
         {isSaved && (
-          <span className="text-sm text-green-500">Dokument bol uložený.</span>
+          <span className="text-sm text-green-500">{t("saved")}</span>
         )}
       </div>
     </div>

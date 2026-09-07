@@ -1,18 +1,20 @@
 import { NextRequest, NextResponse } from "next/server";
 import { randomUUID } from "crypto";
 import { createClient, STORAGE_BUCKET } from "@/lib/supabase/server";
+import { getApiTranslator } from "@/lib/i18n-server";
 import { TransportDocumentSchema } from "@/lib/extraction-schema";
 
 export const runtime = "nodejs";
 
 export async function POST(req: NextRequest) {
+  const t = await getApiTranslator();
   const supabase = createClient();
   const {
     data: { user },
   } = await supabase.auth.getUser();
 
   if (!user) {
-    return NextResponse.json({ error: "Nie si prihlásený." }, { status: 401 });
+    return NextResponse.json({ error: t("errors.notLoggedIn") }, { status: 401 });
   }
 
   const formData = await req.formData();
@@ -21,7 +23,7 @@ export async function POST(req: NextRequest) {
 
   if (!(file instanceof File) || typeof rawData !== "string") {
     return NextResponse.json(
-      { error: "Chýba súbor alebo dáta dokumentu." },
+      { error: t("errors.missingFileOrData") },
       { status: 400 },
     );
   }
@@ -29,7 +31,7 @@ export async function POST(req: NextRequest) {
   const parsed = TransportDocumentSchema.safeParse(JSON.parse(rawData));
   if (!parsed.success) {
     return NextResponse.json(
-      { error: "Neplatné dáta dokumentu.", details: parsed.error.flatten() },
+      { error: t("errors.invalidDocumentData"), details: parsed.error.flatten() },
       { status: 400 },
     );
   }
@@ -47,7 +49,7 @@ export async function POST(req: NextRequest) {
   if (uploadError) {
     console.error("Storage upload failed:", uploadError);
     return NextResponse.json(
-      { error: "Nahratie súboru do úložiska zlyhalo." },
+      { error: t("errors.storageUploadFailed") },
       { status: 502 },
     );
   }
@@ -66,7 +68,7 @@ export async function POST(req: NextRequest) {
   if (insertError) {
     console.error("Insert failed:", insertError);
     return NextResponse.json(
-      { error: "Uloženie záznamu do databázy zlyhalo." },
+      { error: t("errors.dbInsertFailed") },
       { status: 502 },
     );
   }
@@ -75,13 +77,14 @@ export async function POST(req: NextRequest) {
 }
 
 export async function GET() {
+  const t = await getApiTranslator();
   const supabase = createClient();
   const {
     data: { user },
   } = await supabase.auth.getUser();
 
   if (!user) {
-    return NextResponse.json({ error: "Nie si prihlásený." }, { status: 401 });
+    return NextResponse.json({ error: t("errors.notLoggedIn") }, { status: 401 });
   }
 
   // RLS already scopes this to the caller's own rows — the explicit filter
@@ -95,7 +98,7 @@ export async function GET() {
   if (error) {
     console.error("List failed:", error);
     return NextResponse.json(
-      { error: "Načítanie dokumentov zlyhalo." },
+      { error: t("errors.documentsListFailed") },
       { status: 502 },
     );
   }

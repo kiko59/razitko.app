@@ -2,6 +2,7 @@
 
 import { useState, type FormEvent } from "react";
 import Link from "next/link";
+import { useTranslations } from "next-intl";
 import { createClient } from "@/lib/supabase/client";
 import { PLAN_ORDER, PLANS, type PlanId } from "@/lib/plans";
 
@@ -12,6 +13,8 @@ interface SignupFormProps {
 }
 
 export default function SignupForm({ initialTier, isLoggedIn, userEmail }: SignupFormProps) {
+  const t = useTranslations("signup");
+  const tPricing = useTranslations("pricing");
   const [tier, setTier] = useState<PlanId>(initialTier);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -27,7 +30,7 @@ export default function SignupForm({ initialTier, isLoggedIn, userEmail }: Signu
       body: JSON.stringify({ plan }),
     });
     const body = await res.json().catch(() => null);
-    if (!res.ok) throw new Error(body?.error || "Nepodarilo sa spustiť platbu.");
+    if (!res.ok) throw new Error(body?.error || t("errorCheckoutFailed"));
     window.location.href = body.url;
   }
 
@@ -65,7 +68,7 @@ export default function SignupForm({ initialTier, isLoggedIn, userEmail }: Signu
       setConfirmEmailSent(true);
       setIsSubmitting(false);
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Nastala neznáma chyba.");
+      setError(err instanceof Error ? err.message : t("errorUnknown"));
       setIsSubmitting(false);
     }
   }
@@ -73,11 +76,9 @@ export default function SignupForm({ initialTier, isLoggedIn, userEmail }: Signu
   if (confirmEmailSent) {
     return (
       <div className="mx-auto max-w-md rounded-lg border border-border bg-card p-8 text-center">
-        <h1 className="text-xl font-semibold text-foreground">Skontroluj svoj email</h1>
+        <h1 className="text-xl font-semibold text-foreground">{t("confirmEmailTitle")}</h1>
         <p className="mt-3 text-sm text-muted-foreground">
-          Poslali sme ti potvrdzovací odkaz na <span className="text-foreground">{email}</span>.
-          Po potvrdení ťa vrátime rovno sem, aby si mohol/a dokončiť platbu za plán{" "}
-          {PLANS[tier].name}.
+          {t("confirmEmailBody", { email, plan: PLANS[tier].name })}
         </p>
       </div>
     );
@@ -86,17 +87,17 @@ export default function SignupForm({ initialTier, isLoggedIn, userEmail }: Signu
   return (
     <div className="mx-auto max-w-md rounded-lg border border-border bg-card p-8">
       <h1 className="text-xl font-semibold text-foreground">
-        {isLoggedIn ? "Dokonči predplatné" : "Vytvor si účet"}
+        {isLoggedIn ? t("titleLoggedIn") : t("titleNew")}
       </h1>
       <p className="mt-1 text-sm text-muted-foreground">
         {isLoggedIn
-          ? `Pokračuješ ako ${userEmail}.`
-          : `Začni s plánom ${PLANS[tier].name} — vyber si nižšie.`}
+          ? t("subtitleLoggedIn", { email: userEmail ?? "" })
+          : t("subtitleNew", { plan: PLANS[tier].name })}
       </p>
 
       <form onSubmit={handleSubmit} className="mt-6 space-y-6">
         <div>
-          <p className="mb-2 text-sm font-medium text-foreground">Vyber si plán</p>
+          <p className="mb-2 text-sm font-medium text-foreground">{t("choosePlan")}</p>
           <div className="space-y-2">
             {PLAN_ORDER.map((planId) => {
               const plan = PLANS[planId];
@@ -122,14 +123,16 @@ export default function SignupForm({ initialTier, isLoggedIn, userEmail }: Signu
                     <div className="flex items-center justify-between gap-2">
                       <span className="text-sm font-medium text-foreground">{plan.name}</span>
                       <span className="text-sm text-muted-foreground">
-                        {plan.priceEur} € mesačne
+                        {t("perMonth", { price: plan.priceEur })}
                       </span>
                     </div>
-                    <p className="mt-0.5 text-xs text-muted-foreground">{plan.trucks}</p>
+                    <p className="mt-0.5 text-xs text-muted-foreground">
+                      {tPricing(`plans.${planId}.trucks` as Parameters<typeof tPricing>[0])}
+                    </p>
                   </div>
                   {planId === "fleet" && (
                     <span className="absolute -top-2 right-3 rounded-full bg-primary px-2 py-0.5 text-[10px] font-medium text-primary-foreground">
-                      Najpopulárnejší
+                      {tPricing("mostPopular")}
                     </span>
                   )}
                 </label>
@@ -141,7 +144,7 @@ export default function SignupForm({ initialTier, isLoggedIn, userEmail }: Signu
         {!isLoggedIn && (
           <>
             <label className="block text-sm">
-              <span className="mb-1 block font-medium text-foreground">Meno</span>
+              <span className="mb-1 block font-medium text-foreground">{t("name")}</span>
               <input
                 type="text"
                 required
@@ -152,7 +155,7 @@ export default function SignupForm({ initialTier, isLoggedIn, userEmail }: Signu
             </label>
 
             <label className="block text-sm">
-              <span className="mb-1 block font-medium text-foreground">Email</span>
+              <span className="mb-1 block font-medium text-foreground">{t("email")}</span>
               <input
                 type="email"
                 required
@@ -164,7 +167,7 @@ export default function SignupForm({ initialTier, isLoggedIn, userEmail }: Signu
             </label>
 
             <label className="block text-sm">
-              <span className="mb-1 block font-medium text-foreground">Heslo</span>
+              <span className="mb-1 block font-medium text-foreground">{t("password")}</span>
               <input
                 type="password"
                 required
@@ -185,29 +188,25 @@ export default function SignupForm({ initialTier, isLoggedIn, userEmail }: Signu
           disabled={isSubmitting}
           className="w-full rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-60"
         >
-          {isSubmitting
-            ? "Chvíľu strpenia…"
-            : isLoggedIn
-              ? "Pokračovať na platbu →"
-              : "Vytvoriť účet a zaplatiť →"}
+          {isSubmitting ? t("submitting") : isLoggedIn ? t("submitLoggedIn") : t("submitNew")}
         </button>
       </form>
 
       {!isLoggedIn && (
         <p className="mt-4 text-center text-sm text-muted-foreground">
-          Už máš účet?{" "}
+          {t("haveAccount")}{" "}
           <Link
             href={`/login?redirectTo=${encodeURIComponent(`/signup?tier=${tier}`)}`}
             className="text-primary hover:underline"
           >
-            Prihlás sa
+            {t("signIn")}
           </Link>
         </p>
       )}
 
       <p className="mt-2 text-center text-sm text-muted-foreground">
         <Link href="/pricing#faq" className="text-primary hover:underline">
-          Máte otázky? Pozrite si FAQ →
+          {t("faqLink")}
         </Link>
       </p>
     </div>

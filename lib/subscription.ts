@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
+import { getApiTranslator } from "@/lib/i18n-server";
 import { PLANS, type SubscriptionPlan, type PlanId } from "@/lib/plans";
 
 export interface ApiCaller {
@@ -8,11 +9,6 @@ export interface ApiCaller {
   plan: SubscriptionPlan;
   viaApiKey: boolean;
 }
-
-const UPGRADE_MESSAGE = {
-  error: "Nemáš aktívne predplatné.",
-  upgradeUrl: "/pricing",
-};
 
 // Resolves who's calling /api/extract and how:
 // - `Authorization: Bearer <api_key>` — a direct/external API call. Only
@@ -24,6 +20,7 @@ const UPGRADE_MESSAGE = {
 export async function resolveApiCaller(
   req: NextRequest,
 ): Promise<ApiCaller | { error: NextResponse }> {
+  const t = await getApiTranslator();
   const authHeader = req.headers.get("authorization");
 
   if (authHeader?.startsWith("Bearer ")) {
@@ -36,18 +33,16 @@ export async function resolveApiCaller(
       .single();
 
     if (!profile) {
-      return { error: NextResponse.json({ error: "Neplatný API kľúč." }, { status: 401 }) };
+      return {
+        error: NextResponse.json({ error: t("errors.invalidApiKey") }, { status: 401 }),
+      };
     }
 
     const plan = profile.subscription_plan as SubscriptionPlan;
     if (plan !== "fleet" && plan !== "pro") {
       return {
         error: NextResponse.json(
-          {
-            error:
-              "Priamy REST API prístup je dostupný len pre plány Fleet a Pro. Prihlás sa cez webovú appku alebo si upgraduj plán.",
-            upgradeUrl: "/pricing",
-          },
+          { error: t("errors.apiFleetProOnly"), upgradeUrl: "/pricing" },
           { status: 403 },
         ),
       };
@@ -62,7 +57,9 @@ export async function resolveApiCaller(
   } = await supabase.auth.getUser();
 
   if (!user) {
-    return { error: NextResponse.json({ error: "Nie si prihlásený." }, { status: 401 }) };
+    return {
+      error: NextResponse.json({ error: t("errors.notLoggedIn") }, { status: 401 }),
+    };
   }
 
   const { data: profile } = await supabase
@@ -84,8 +81,13 @@ export async function enforceMonthlyLimit(
   userId: string,
   plan: SubscriptionPlan,
 ): Promise<NextResponse | null> {
+  const t = await getApiTranslator();
+
   if (plan === "none") {
-    return NextResponse.json(UPGRADE_MESSAGE, { status: 402 });
+    return NextResponse.json(
+      { error: t("errors.noSubscription"), upgradeUrl: "/pricing" },
+      { status: 402 },
+    );
   }
 
   const limit = PLANS[plan as PlanId].monthlyLimit;
@@ -101,10 +103,7 @@ export async function enforceMonthlyLimit(
   const used = profile?.documents_used_this_month ?? 0;
   if (used >= limit) {
     return NextResponse.json(
-      {
-        error: "Dosiahli ste mesačný limit, upgradujte plán.",
-        upgradeUrl: "/pricing",
-      },
+      { error: t("errors.limitReached"), upgradeUrl: "/pricing" },
       { status: 402 },
     );
   }

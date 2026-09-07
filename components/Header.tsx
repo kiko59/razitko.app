@@ -1,6 +1,8 @@
 import Link from "next/link";
+import { getTranslations } from "next-intl/server";
 import { signOutAction } from "@/app/actions";
 import { PLANS, type PlanId } from "@/lib/plans";
+import LocaleSwitcher from "@/components/LocaleSwitcher";
 
 interface HeaderProps {
   userEmail: string | null;
@@ -8,7 +10,8 @@ interface HeaderProps {
   documentsUsed: number;
 }
 
-export default function Header({ userEmail, plan, documentsUsed }: HeaderProps) {
+export default async function Header({ userEmail, plan, documentsUsed }: HeaderProps) {
+  const t = await getTranslations("header");
   const planConfig = plan ? PLANS[plan] : null;
 
   return (
@@ -18,11 +21,12 @@ export default function Header({ userEmail, plan, documentsUsed }: HeaderProps) 
         {userEmail && <p className="text-xs text-muted-foreground">{userEmail}</p>}
       </div>
       <div className="flex items-center gap-4">
+        <LocaleSwitcher />
         {planConfig && (
           <Link href="/billing" className="text-right text-xs text-muted-foreground hover:underline">
             <span className="block font-medium text-foreground">{planConfig.name}</span>
             <span>
-              {documentsUsed}/{planConfig.monthlyLimit ?? "∞"} dokumentov tento mesiac
+              {t("usage", { used: documentsUsed, limit: planConfig.monthlyLimit ?? "∞" })}
             </span>
           </Link>
         )}
@@ -31,7 +35,7 @@ export default function Header({ userEmail, plan, documentsUsed }: HeaderProps) 
             type="submit"
             className="rounded-md border border-border bg-secondary px-3 py-1.5 text-sm font-medium text-secondary-foreground hover:bg-accent"
           >
-            Odhlásiť sa
+            {t("signOut")}
           </button>
         </form>
       </div>

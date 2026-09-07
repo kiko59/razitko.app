@@ -1,12 +1,14 @@
 "use client";
 
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 import DocumentUpload from "@/components/DocumentUpload";
 import ExtractedDataForm from "@/components/ExtractedDataForm";
 import ExportButtons from "@/components/ExportButtons";
 import type { TransportDocumentData } from "@/lib/types";
 
 export default function HomeClient() {
+  const t = useTranslations("form");
   const [file, setFile] = useState<File | null>(null);
   const [data, setData] = useState<TransportDocumentData | null>(null);
   const [documentId, setDocumentId] = useState<string | null>(null);
@@ -36,13 +38,13 @@ export default function HomeClient() {
 
       if (!res.ok) {
         const body = await res.json().catch(() => null);
-        throw new Error(body?.error || "Uloženie zlyhalo.");
+        throw new Error(body?.error || t("errorSaveFailed"));
       }
 
       const { id } = await res.json();
       setDocumentId(id);
     } catch (err) {
-      setSaveError(err instanceof Error ? err.message : "Nastala neznáma chyba.");
+      setSaveError(err instanceof Error ? err.message : t("errorUnknown"));
     } finally {
       setIsSaving(false);
     }
@@ -61,7 +63,7 @@ export default function HomeClient() {
             isSaving={isSaving}
             isSaved={!!documentId}
           />
-          {saveError && <p className="text-sm text-red-600">{saveError}</p>}
+          {saveError && <p className="text-sm text-destructive">{saveError}</p>}
           {documentId && <ExportButtons documentId={documentId} />}
         </div>
       )}

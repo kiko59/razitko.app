@@ -1,0 +1,238 @@
+{
+  "nav": {
+    "pricing": "Preise",
+    "login": "Anmelden",
+    "tryFree": "Kostenlos testen"
+  },
+  "landing": {
+    "eyebrow": "Für Disponenten und Speditionen",
+    "heading": "Tippst du abends immer noch CMRs ab?",
+    "subheading": "Razítko liest CMR, BOL und Lieferscheine in Sekunden. Einfach Scan oder Handyfoto hochladen — die KI extrahiert alle Felder, bereit zum Speichern oder Exportieren.",
+    "ctaPrimary": "Kostenlos testen",
+    "ctaSecondary": "Schon ein Konto? Anmelden →",
+    "demo": {
+      "eyebrow": "Extraktionsbeispiel",
+      "heading": "Scan links, Daten rechts — ohne Abtippen.",
+      "inputLabel": "Eingabe",
+      "inputTitle": "Gescannter CMR / Lieferschein",
+      "inputPlaceholder": "Beispiel — statische Vorschau, keine echte Datei.",
+      "outputLabel": "Extrahierte Felder",
+      "outputTitle": "Wichtige Felder, bereit zum Speichern.",
+      "fields": {
+        "sender": "ABSENDER",
+        "recipient": "EMPFÄNGER",
+        "weight": "GEWICHT",
+        "reference": "REFERENZNUMMER",
+        "loadingDate": "VERLADEDATUM",
+        "unloadingPlace": "ENTLADEORT"
+      }
+    },
+    "howItWorks": {
+      "eyebrow": "So funktioniert's",
+      "heading": "Drei Schritte vom CMR-Foto zu fertigen Daten",
+      "step1Label": "Schritt 1",
+      "step1Title": "CMR fotografieren / hochladen",
+      "step1Body": "Screenshot, Scan oder Handyfoto — Razítko akzeptiert alles, was du vom Fahrer bekommst.",
+      "step2Label": "Schritt 2",
+      "step2Title": "Razítko extrahiert die Felder",
+      "step2Body": "Claude AI extrahiert Absender, Empfänger, Gewicht, Referenznummer sowie Verlade- und Entladeort in eine bearbeitbare Vorschau.",
+      "step3Label": "Schritt 3",
+      "step3Title": "Speichern und als PDF oder JSON herunterladen",
+      "step3Body": "Geprüfte Daten gehen an Buchhaltung oder TMS — per PDF, JSON-Export oder direkt per REST-API in den Plänen Fleet und Pro."
+    },
+    "ctaSection": {
+      "heading": "Teste Razítko kostenlos",
+      "subheading": "Wähle einen Plan und spare ab heute Zeit.",
+      "primary": "Kostenlos testen",
+      "secondary": "Preise ansehen →"
+    },
+    "footer": {
+      "faq": "FAQ",
+      "pricing": "Preise",
+      "login": "Anmelden"
+    }
+  },
+  "pricing": {
+    "eyebrow": "Preise",
+    "heading": "Solo, Fleet oder Pro — CMR-Extraktion für jede Flottengröße.",
+    "subheading": "Drei Pläne für einzelne CMR-Scans, Massen-Uploads oder API-Integration. Preise in EUR, monatlich, zzgl. MwSt. Wähle nach Flottengröße — jederzeit änderbar oder kündbar.",
+    "faq": {
+      "eyebrow": "FAQ zu den Plänen",
+      "heading": "Antworten vor der Planwahl",
+      "q1": "Wo werden meine Daten gespeichert und wer hat Zugriff?",
+      "a1": "Dokumente und extrahierte Daten werden in Supabase (PostgreSQL + Storage) gespeichert. Dank Row Level Security sieht jeder Nutzer ausschließlich seine eigenen Dokumente — niemand sonst, auch nicht im selben Plan.",
+      "q2": "Welche Sprachen unterstützt die Extraktion?",
+      "a2": "Solo deckt Slowakisch, Tschechisch und Englisch ab. Fleet fügt Deutsch und Französisch hinzu. Pro unterstützt alle aktuellen Sprachen inklusive Early Access für neue.",
+      "q3": "Welche Genauigkeit kann ich ab dem ersten Tag erwarten?",
+      "a3": "Die Extraktion läuft auf Claude mit hoher Genauigkeit bei gut lesbaren Scans und Fotos. Unsichere oder unleserliche Felder werden markiert und im bearbeitbaren Formular vor dem Speichern zur Ergänzung freigegeben.",
+      "q4": "Welcher Support gehört zu welchem Plan?",
+      "a4": "Solo hat E-Mail-Support auf Best-Effort-Basis. Fleet garantiert eine Antwort innerhalb von 24 Stunden. Pro hat einen dedizierten Ansprechpartner und begleitetes Onboarding."
+    },
+    "comparison": {
+      "eyebrow": "Planvergleich",
+      "heading": "Solo vs. Fleet vs. Pro — was du in jedem Plan bekommst.",
+      "feature": "Merkmal",
+      "rowVolume": "CMR-Volumen (monatlich)",
+      "rowLanguages": "Unterstützte Sprachen",
+      "rowApi": "API-Zugriff",
+      "rowSeats": "Dashboard-Plätze",
+      "rowSupport": "Support",
+      "unlimited": "Unbegrenzt",
+      "allLanguages": "Alle Sprachen",
+      "apiYes": "REST-API",
+      "apiNo": "Nein"
+    },
+    "perMonthNoVat": "zzgl. MwSt. / Monat",
+    "mostPopular": "Am beliebtesten",
+    "selectPlan": "{plan} wählen",
+    "currentPlan": "Dein aktueller Plan",
+    "enterprise": "Für Enterprise- oder individuelle Preise kontaktiere uns.",
+    "plans": {
+      "solo": {
+        "trucks": "1 LKW",
+        "support": "E-Mail, Best-Effort",
+        "feature1": "1 LKW",
+        "feature2": "60 CMR-Extraktionen / Monat",
+        "feature3": "Sprachen: SK, CZ, EN",
+        "feature4": "Kein API-Zugriff",
+        "feature5": "1 Benutzerplatz",
+        "feature6": "Support: E-Mail, Best-Effort",
+        "languages": "SK, CZ, EN"
+      },
+      "fleet": {
+        "trucks": "2–5 LKW",
+        "support": "E-Mail, Antwort innerhalb 24h",
+        "feature1": "2–5 LKW",
+        "feature2": "250 CMR-Extraktionen / Monat",
+        "feature3": "Sprachen: SK, CZ, EN, DE, FR",
+        "feature4": "REST-API als optionales Add-on (60 Req/min)",
+        "feature5": "5 Benutzerplätze",
+        "feature6": "Support: E-Mail, Antwort innerhalb 24h",
+        "languages": "SK, CZ, EN, DE, FR"
+      },
+      "pro": {
+        "trucks": "6–10 LKW",
+        "support": "Dedizierter Kontakt + Onboarding",
+        "feature1": "6–10 LKW",
+        "feature2": "Unbegrenzte Extraktionen",
+        "feature3": "Alle Sprachen + Early Access zu neuen Funktionen",
+        "feature4": "REST-API + Webhooks, HMAC-Signatur, 300 Req/min",
+        "feature5": "10 Benutzerplätze",
+        "feature6": "Support: dedizierter Kontakt + Onboarding"
+      }
+    }
+  },
+  "login": {
+    "title": "Willkommen zurück",
+    "subtitle": "Melde dich an, um fortzufahren.",
+    "email": "E-Mail",
+    "password": "Passwort",
+    "submit": "Anmelden",
+    "submitting": "Einen Moment…",
+    "noAccount": "Noch kein Konto?",
+    "createOne": "Konto erstellen"
+  },
+  "signup": {
+    "titleNew": "Konto erstellen",
+    "titleLoggedIn": "Abonnement abschließen",
+    "subtitleNew": "Starte mit dem Plan {plan} — wähle unten.",
+    "subtitleLoggedIn": "Du fährst fort als {email}.",
+    "choosePlan": "Plan wählen",
+    "perMonth": "{price} € monatlich",
+    "name": "Name",
+    "email": "E-Mail",
+    "password": "Passwort",
+    "submitNew": "Konto erstellen und bezahlen →",
+    "submitLoggedIn": "Weiter zur Zahlung →",
+    "submitting": "Einen Moment…",
+    "haveAccount": "Schon ein Konto?",
+    "signIn": "Anmelden",
+    "faqLink": "Fragen? FAQ ansehen →",
+    "confirmEmailTitle": "Prüfe deine E-Mail",
+    "confirmEmailBody": "Wir haben einen Bestätigungslink an {email} gesendet. Nach der Bestätigung bringen wir dich direkt hierher zurück, damit du die Zahlung für den Plan {plan} abschließen kannst.",
+    "errorUnknown": "Ein unbekannter Fehler ist aufgetreten.",
+    "errorCheckoutFailed": "Checkout konnte nicht gestartet werden."
+  },
+  "billing": {
+    "back": "← Zurück zur App",
+    "title": "Abonnement",
+    "currentPlan": "Aktueller Plan",
+    "usage": "{used} / {limit} Dokumente diesen Monat genutzt",
+    "noPlan": "Du hast kein aktives Abonnement.",
+    "choosePlan": "Plan wählen",
+    "manage": "Abonnement verwalten",
+    "openingPortal": "Stripe-Portal wird geöffnet…",
+    "errorUnknown": "Ein unbekannter Fehler ist aufgetreten.",
+    "errorOpenPortalFailed": "Portal konnte nicht geöffnet werden."
+  },
+  "header": {
+    "usage": "{used}/{limit} Dokumente diesen Monat",
+    "signOut": "Abmelden"
+  },
+  "app": {
+    "intro": "Lade ein Transportdokument (CMR, BOL, Lieferschein) hoch und extrahiere automatisch die wichtigsten Daten."
+  },
+  "upload": {
+    "dragHint": "CMR, BOL oder Lieferschein hierher ziehen",
+    "clickHint": "oder klicken, um eine Datei auszuwählen (JPEG, PNG, PDF — max. 15 MB)",
+    "extracting": "Dokument wird mit Claude verarbeitet…",
+    "upgradeLink": "Plan upgraden",
+    "errorUnsupportedType": "Nur Bilder (JPEG, PNG, GIF, WebP) und PDF werden unterstützt.",
+    "errorTooLarge": "Datei ist zu groß (max. 15 MB).",
+    "errorExtractionFailed": "Datenextraktion fehlgeschlagen.",
+    "errorUnknown": "Ein unbekannter Fehler ist aufgetreten."
+  },
+  "form": {
+    "documentType": "Dokumenttyp",
+    "docTypeCMR": "CMR",
+    "docTypeBOL": "Bill of Lading (BOL)",
+    "docTypeDodaciList": "Lieferschein",
+    "docTypeIny": "Sonstiges",
+    "sender": "Absender",
+    "recipient": "Empfänger",
+    "nameLabel": "Name",
+    "address": "Adresse",
+    "weight": "Gewicht (kg)",
+    "referenceNumber": "Referenznummer",
+    "loadingDate": "Verladedatum",
+    "loadingPlace": "Verladeort",
+    "unloadingPlace": "Entladeort",
+    "notes": "Notizen",
+    "save": "Dokument speichern",
+    "saving": "Wird gespeichert…",
+    "saveAgain": "Gespeichert — erneut speichern",
+    "saved": "Dokument gespeichert.",
+    "errorSaveFailed": "Speichern fehlgeschlagen.",
+    "errorUnknown": "Ein unbekannter Fehler ist aufgetreten."
+  },
+  "export": {
+    "pdf": "PDF herunterladen",
+    "json": "JSON herunterladen"
+  },
+  "errors": {
+    "notLoggedIn": "Du bist nicht angemeldet.",
+    "noSubscription": "Du hast kein aktives Abonnement.",
+    "limitReached": "Du hast dein monatliches Limit erreicht — upgrade deinen Plan.",
+    "invalidApiKey": "Ungültiger API-Schlüssel.",
+    "apiFleetProOnly": "Direkter REST-API-Zugriff ist nur in den Plänen Fleet und Pro verfügbar. Melde dich über die Web-App an oder upgrade deinen Plan.",
+    "missingFile": "Fehlende Datei im Feld 'file'.",
+    "unsupportedFileType": "Nicht unterstützter Dateityp.",
+    "fileTooLarge": "Datei ist zu groß (max. 15 MB).",
+    "extractionFailed": "Extraktion über Claude fehlgeschlagen. Bitte versuche es erneut.",
+    "missingFileOrData": "Datei oder Dokumentdaten fehlen.",
+    "invalidDocumentData": "Ungültige Dokumentdaten.",
+    "storageUploadFailed": "Hochladen der Datei in den Speicher fehlgeschlagen.",
+    "dbInsertFailed": "Speichern des Datensatzes in der Datenbank fehlgeschlagen.",
+    "documentsListFailed": "Laden der Dokumente fehlgeschlagen.",
+    "documentNotFound": "Dokument nicht gefunden.",
+    "missingIdParam": "Parameter 'id' fehlt.",
+    "invalidPlan": "Ungültiger Plan.",
+    "missingPriceConfig": "STRIPE_PRICE_{plan} fehlt in der Serverkonfiguration.",
+    "stripeNoUrl": "Stripe hat keine Checkout-URL zurückgegeben.",
+    "checkoutCreateFailed": "Stripe-Checkout konnte nicht erstellt werden: {message}",
+    "noSubscriptionToManage": "Du hast noch kein Abonnement zu verwalten.",
+    "webhookConfigMissing": "Webhook-Konfiguration fehlt.",
+    "invalidSignature": "Ungültige Signatur.",
+    "portalCreateFailed": "Stripe-Portal konnte nicht geöffnet werden: {message}"
+  }
+}

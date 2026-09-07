@@ -2,6 +2,7 @@
 
 import { useRef, useState } from "react";
 import Link from "next/link";
+import { useTranslations } from "next-intl";
 import type { TransportDocumentData } from "@/lib/types";
 
 interface DocumentUploadProps {
@@ -18,6 +19,7 @@ const ACCEPTED_TYPES = [
 const MAX_SIZE_BYTES = 15 * 1024 * 1024;
 
 export default function DocumentUpload({ onExtracted }: DocumentUploadProps) {
+  const t = useTranslations("upload");
   const [isDragging, setIsDragging] = useState(false);
   const [isExtracting, setIsExtracting] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -29,11 +31,11 @@ export default function DocumentUpload({ onExtracted }: DocumentUploadProps) {
     setUpgradeUrl(null);
 
     if (!ACCEPTED_TYPES.includes(file.type)) {
-      setError("Podporované sú len obrázky (JPEG, PNG, GIF, WebP) a PDF.");
+      setError(t("errorUnsupportedType"));
       return;
     }
     if (file.size > MAX_SIZE_BYTES) {
-      setError("Súbor je príliš veľký (max 15 MB).");
+      setError(t("errorTooLarge"));
       return;
     }
 
@@ -50,13 +52,13 @@ export default function DocumentUpload({ onExtracted }: DocumentUploadProps) {
       if (!res.ok) {
         const body = await res.json().catch(() => null);
         if (body?.upgradeUrl) setUpgradeUrl(body.upgradeUrl);
-        throw new Error(body?.error || "Extrakcia dát zlyhala.");
+        throw new Error(body?.error || t("errorExtractionFailed"));
       }
 
       const { data } = await res.json();
       onExtracted({ file, data });
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Nastala neznáma chyba.");
+      setError(err instanceof Error ? err.message : t("errorUnknown"));
     } finally {
       setIsExtracting(false);
     }
@@ -95,17 +97,11 @@ export default function DocumentUpload({ onExtracted }: DocumentUploadProps) {
           }}
         />
         {isExtracting ? (
-          <p className="text-sm text-muted-foreground">
-            Spracúvam dokument cez Claude…
-          </p>
+          <p className="text-sm text-muted-foreground">{t("extracting")}</p>
         ) : (
           <>
-            <p className="text-sm font-medium text-foreground">
-              Presuň sem CMR, BOL alebo dodací list
-            </p>
-            <p className="mt-1 text-xs text-muted-foreground">
-              alebo klikni pre výber súboru (JPEG, PNG, PDF — max 15 MB)
-            </p>
+            <p className="text-sm font-medium text-foreground">{t("dragHint")}</p>
+            <p className="mt-1 text-xs text-muted-foreground">{t("clickHint")}</p>
           </>
         )}
       </div>
@@ -116,7 +112,7 @@ export default function DocumentUpload({ onExtracted }: DocumentUploadProps) {
             <>
               {" "}
               <Link href={upgradeUrl} className="underline">
-                Upgradovať plán
+                {t("upgradeLink")}
               </Link>
             </>
           )}

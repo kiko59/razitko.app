@@ -6,75 +6,41 @@ export interface PlanConfig {
   name: string;
   priceEur: number;
   priceId: string | undefined;
-  trucks: string;
   monthlyLimit: number | null;
   apiAccess: boolean;
   seats: number;
-  languages: string[];
-  support: string;
-  features: string[];
 }
 
+// Display copy (trucks, support, feature bullets) lives in messages/*.json
+// under pricing.plans.<id> — keyed the same as this object so components
+// can pair a plan's functional data with its translated text.
 export const PLANS: Record<PlanId, PlanConfig> = {
   solo: {
     id: "solo",
     name: "Solo",
     priceEur: 49,
     priceId: process.env.STRIPE_PRICE_SOLO?.trim(),
-    trucks: "1 kamión",
     monthlyLimit: 60,
     apiAccess: false,
     seats: 1,
-    languages: ["SK", "CZ", "EN"],
-    support: "Email, best-effort",
-    features: [
-      "1 kamión",
-      "60 CMR extrakcií / mesiac",
-      "Jazyky: SK, CZ, EN",
-      "Bez API prístupu",
-      "1 používateľské sedadlo",
-      "Support: email, best-effort",
-    ],
   },
   fleet: {
     id: "fleet",
     name: "Fleet",
     priceEur: 149,
     priceId: process.env.STRIPE_PRICE_FLEET?.trim(),
-    trucks: "2–5 kamiónov",
     monthlyLimit: 250,
     apiAccess: true,
     seats: 5,
-    languages: ["SK", "CZ", "EN", "DE", "FR"],
-    support: "Email, odpoveď do 24h",
-    features: [
-      "2–5 kamiónov",
-      "250 CMR extrakcií / mesiac",
-      "Jazyky: SK, CZ, EN, DE, FR",
-      "REST API ako voliteľný add-on (60 req/min)",
-      "5 používateľských sedadiel",
-      "Support: email, odpoveď do 24h",
-    ],
   },
   pro: {
     id: "pro",
     name: "Pro",
     priceEur: 300,
     priceId: process.env.STRIPE_PRICE_PRO?.trim(),
-    trucks: "6–10 kamiónov",
     monthlyLimit: null,
     apiAccess: true,
     seats: 10,
-    languages: ["Všetky jazyky"],
-    support: "Dedikovaný kontakt + onboarding",
-    features: [
-      "6–10 kamiónov",
-      "Neobmedzený počet extrakcií",
-      "Všetky jazyky + early-access k novým funkciám",
-      "REST API + webhooky, HMAC podpis, 300 req/min",
-      "10 používateľských sedadiel",
-      "Support: dedikovaný kontakt + onboarding",
-    ],
   },
 };
 

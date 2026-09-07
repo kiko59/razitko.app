@@ -1,0 +1,238 @@
+{
+  "nav": {
+    "pricing": "Pricing",
+    "login": "Log in",
+    "tryFree": "Try for free"
+  },
+  "landing": {
+    "eyebrow": "For dispatchers and freight companies",
+    "heading": "Still retyping CMRs every evening?",
+    "subheading": "Razítko reads CMR, BOL and delivery notes in seconds. Just upload a scan or a phone photo and AI pulls out every field, ready to save or export.",
+    "ctaPrimary": "Try for free",
+    "ctaSecondary": "Already have an account? Log in →",
+    "demo": {
+      "eyebrow": "Extraction example",
+      "heading": "Scan on the left, data on the right — no retyping.",
+      "inputLabel": "Input",
+      "inputTitle": "Scanned CMR / delivery note",
+      "inputPlaceholder": "Example — static preview, no real file.",
+      "outputLabel": "Extracted fields",
+      "outputTitle": "Key fields ready to save.",
+      "fields": {
+        "sender": "SENDER",
+        "recipient": "RECIPIENT",
+        "weight": "WEIGHT",
+        "reference": "REFERENCE NUMBER",
+        "loadingDate": "LOADING DATE",
+        "unloadingPlace": "UNLOADING PLACE"
+      }
+    },
+    "howItWorks": {
+      "eyebrow": "How it works",
+      "heading": "Three steps from a CMR photo to finished data",
+      "step1Label": "Step 1",
+      "step1Title": "Photograph / upload the CMR",
+      "step1Body": "Screenshot, scan, or a photo from a phone — Razítko accepts whatever you get from the driver.",
+      "step2Label": "Step 2",
+      "step2Title": "Razítko extracts the fields",
+      "step2Body": "Claude AI pulls out the sender, recipient, weight, reference number and loading/unloading places into an editable preview.",
+      "step3Label": "Step 3",
+      "step3Title": "Save and download as PDF or JSON",
+      "step3Body": "Send the checked data to accounting or your TMS — via PDF, JSON export, or directly via REST API on the Fleet and Pro plans."
+    },
+    "ctaSection": {
+      "heading": "Try Razítko for free",
+      "subheading": "Pick a plan and start saving time today.",
+      "primary": "Try for free",
+      "secondary": "See pricing →"
+    },
+    "footer": {
+      "faq": "FAQ",
+      "pricing": "Pricing",
+      "login": "Log in"
+    }
+  },
+  "pricing": {
+    "eyebrow": "Pricing",
+    "heading": "Solo, Fleet, or Pro — CMR extraction for any fleet size.",
+    "subheading": "Three plans for single CMR scans, bulk uploads, or API integration. Prices in EUR, monthly, excl. VAT. Pick the plan that fits your fleet — change or cancel anytime.",
+    "faq": {
+      "eyebrow": "Plan FAQ",
+      "heading": "Answers before you choose a plan",
+      "q1": "Where is my data stored and who can access it?",
+      "a1": "Documents and extracted data are stored in Supabase (PostgreSQL + Storage). Row Level Security means every user sees only their own documents — no one else, not even on the same plan.",
+      "q2": "Which languages does extraction support?",
+      "a2": "Solo covers Slovak, Czech, and English. Fleet adds German and French. Pro supports every current language, including early access to new ones.",
+      "q3": "What accuracy can I expect from day one?",
+      "a3": "Extraction runs on Claude with high accuracy on legible scans and photos. Uncertain or illegible fields are flagged and left for you to fill in on the editable form before saving.",
+      "q4": "What support comes with each plan?",
+      "a4": "Solo gets best-effort email support. Fleet guarantees a reply within 24 hours. Pro gets a dedicated contact and assisted onboarding."
+    },
+    "comparison": {
+      "eyebrow": "Plan comparison",
+      "heading": "Solo vs Fleet vs Pro — what you get on each plan.",
+      "feature": "Feature",
+      "rowVolume": "CMR volume (monthly)",
+      "rowLanguages": "Supported languages",
+      "rowApi": "API access",
+      "rowSeats": "Dashboard seats",
+      "rowSupport": "Support",
+      "unlimited": "Unlimited",
+      "allLanguages": "All languages",
+      "apiYes": "REST API",
+      "apiNo": "No"
+    },
+    "perMonthNoVat": "excl. VAT / month",
+    "mostPopular": "Most popular",
+    "selectPlan": "Choose {plan}",
+    "currentPlan": "Your current plan",
+    "enterprise": "Contact us for enterprise or custom pricing.",
+    "plans": {
+      "solo": {
+        "trucks": "1 truck",
+        "support": "Email, best-effort",
+        "feature1": "1 truck",
+        "feature2": "60 CMR extractions / month",
+        "feature3": "Languages: SK, CZ, EN",
+        "feature4": "No API access",
+        "feature5": "1 user seat",
+        "feature6": "Support: email, best-effort",
+        "languages": "SK, CZ, EN"
+      },
+      "fleet": {
+        "trucks": "2–5 trucks",
+        "support": "Email, reply within 24h",
+        "feature1": "2–5 trucks",
+        "feature2": "250 CMR extractions / month",
+        "feature3": "Languages: SK, CZ, EN, DE, FR",
+        "feature4": "REST API as an optional add-on (60 req/min)",
+        "feature5": "5 user seats",
+        "feature6": "Support: email, reply within 24h",
+        "languages": "SK, CZ, EN, DE, FR"
+      },
+      "pro": {
+        "trucks": "6–10 trucks",
+        "support": "Dedicated contact + onboarding",
+        "feature1": "6–10 trucks",
+        "feature2": "Unlimited extractions",
+        "feature3": "All languages + early access to new features",
+        "feature4": "REST API + webhooks, HMAC signature, 300 req/min",
+        "feature5": "10 user seats",
+        "feature6": "Support: dedicated contact + onboarding"
+      }
+    }
+  },
+  "login": {
+    "title": "Welcome back",
+    "subtitle": "Sign in to your account to continue.",
+    "email": "Email",
+    "password": "Password",
+    "submit": "Sign in",
+    "submitting": "Just a moment…",
+    "noAccount": "Don't have an account?",
+    "createOne": "Create one"
+  },
+  "signup": {
+    "titleNew": "Create an account",
+    "titleLoggedIn": "Finish your subscription",
+    "subtitleNew": "Start with the {plan} plan — choose it below.",
+    "subtitleLoggedIn": "Continuing as {email}.",
+    "choosePlan": "Choose a plan",
+    "perMonth": "€{price} / month",
+    "name": "Name",
+    "email": "Email",
+    "password": "Password",
+    "submitNew": "Create account and pay →",
+    "submitLoggedIn": "Continue to payment →",
+    "submitting": "Just a moment…",
+    "haveAccount": "Already have an account?",
+    "signIn": "Sign in",
+    "faqLink": "Have questions? See the FAQ →",
+    "confirmEmailTitle": "Check your email",
+    "confirmEmailBody": "We sent a confirmation link to {email}. Once confirmed, we'll bring you right back here so you can finish paying for the {plan} plan.",
+    "errorUnknown": "An unknown error occurred.",
+    "errorCheckoutFailed": "Couldn't start checkout."
+  },
+  "billing": {
+    "back": "← Back to the app",
+    "title": "Subscription",
+    "currentPlan": "Current plan",
+    "usage": "{used} / {limit} documents used this month",
+    "noPlan": "You don't have an active subscription.",
+    "choosePlan": "Choose a plan",
+    "manage": "Manage subscription",
+    "openingPortal": "Opening the Stripe portal…",
+    "errorUnknown": "An unknown error occurred.",
+    "errorOpenPortalFailed": "Couldn't open the portal."
+  },
+  "header": {
+    "usage": "{used}/{limit} documents this month",
+    "signOut": "Sign out"
+  },
+  "app": {
+    "intro": "Upload a transport document (CMR, BOL, delivery note) and automatically extract the key data from it."
+  },
+  "upload": {
+    "dragHint": "Drop a CMR, BOL, or delivery note here",
+    "clickHint": "or click to choose a file (JPEG, PNG, PDF — max 15 MB)",
+    "extracting": "Processing the document with Claude…",
+    "upgradeLink": "Upgrade plan",
+    "errorUnsupportedType": "Only images (JPEG, PNG, GIF, WebP) and PDF are supported.",
+    "errorTooLarge": "File is too large (max 15 MB).",
+    "errorExtractionFailed": "Data extraction failed.",
+    "errorUnknown": "An unknown error occurred."
+  },
+  "form": {
+    "documentType": "Document type",
+    "docTypeCMR": "CMR",
+    "docTypeBOL": "Bill of Lading (BOL)",
+    "docTypeDodaciList": "Delivery note",
+    "docTypeIny": "Other",
+    "sender": "Sender",
+    "recipient": "Recipient",
+    "nameLabel": "Name",
+    "address": "Address",
+    "weight": "Weight (kg)",
+    "referenceNumber": "Reference number",
+    "loadingDate": "Loading date",
+    "loadingPlace": "Loading place",
+    "unloadingPlace": "Unloading place",
+    "notes": "Notes",
+    "save": "Save document",
+    "saving": "Saving…",
+    "saveAgain": "Saved — save again",
+    "saved": "Document saved.",
+    "errorSaveFailed": "Save failed.",
+    "errorUnknown": "An unknown error occurred."
+  },
+  "export": {
+    "pdf": "Download PDF",
+    "json": "Download JSON"
+  },
+  "errors": {
+    "notLoggedIn": "You're not signed in.",
+    "noSubscription": "You don't have an active subscription.",
+    "limitReached": "You've reached your monthly limit — upgrade your plan.",
+    "invalidApiKey": "Invalid API key.",
+    "apiFleetProOnly": "Direct REST API access is available on the Fleet and Pro plans only. Sign in through the web app, or upgrade your plan.",
+    "missingFile": "Missing file in the 'file' field.",
+    "unsupportedFileType": "Unsupported file type.",
+    "fileTooLarge": "File is too large (max 15 MB).",
+    "extractionFailed": "Extraction via Claude failed. Please try again.",
+    "missingFileOrData": "Missing file or document data.",
+    "invalidDocumentData": "Invalid document data.",
+    "storageUploadFailed": "Uploading the file to storage failed.",
+    "dbInsertFailed": "Saving the record to the database failed.",
+    "documentsListFailed": "Loading documents failed.",
+    "documentNotFound": "Document not found.",
+    "missingIdParam": "Missing 'id' parameter.",
+    "invalidPlan": "Invalid plan.",
+    "missingPriceConfig": "STRIPE_PRICE_{plan} is missing from the server configuration.",
+    "stripeNoUrl": "Stripe didn't return a checkout URL.",
+    "checkoutCreateFailed": "Couldn't create the Stripe checkout: {message}",
+    "noSubscriptionToManage": "You don't have a subscription to manage yet.",
+    "webhookConfigMissing": "Webhook configuration is missing.",
+    "invalidSignature": "Invalid signature.",
+    "portalCreateFailed": "Couldn't open the Stripe portal: {message}"
+  }
+}

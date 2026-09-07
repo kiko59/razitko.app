@@ -3,7 +3,9 @@
 import { Suspense, useState, type FormEvent } from "react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
+import { useTranslations } from "next-intl";
 import { createClient } from "@/lib/supabase/client";
+import LocaleSwitcher from "@/components/LocaleSwitcher";
 
 export default function LoginPage() {
   return (
@@ -14,6 +16,7 @@ export default function LoginPage() {
 }
 
 function LoginForm() {
+  const t = useTranslations("login");
   const router = useRouter();
   const searchParams = useSearchParams();
   const redirectTo = searchParams.get("redirectTo") || "/app";
@@ -36,7 +39,7 @@ function LoginForm() {
       router.push(redirectTo);
       router.refresh();
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Nastala neznáma chyba.");
+      setError(err instanceof Error ? err.message : "Unknown error.");
     } finally {
       setIsSubmitting(false);
     }
@@ -44,15 +47,16 @@ function LoginForm() {
 
   return (
     <main className="mx-auto flex min-h-screen max-w-sm flex-col justify-center px-4 py-10">
+      <div className="mb-4 flex justify-end">
+        <LocaleSwitcher />
+      </div>
       <div className="rounded-lg border border-border bg-card p-8">
-        <h1 className="text-xl font-semibold text-foreground">Vitaj späť</h1>
-        <p className="mt-1 text-sm text-muted-foreground">
-          Prihlás sa do svojho účtu a pokračuj.
-        </p>
+        <h1 className="text-xl font-semibold text-foreground">{t("title")}</h1>
+        <p className="mt-1 text-sm text-muted-foreground">{t("subtitle")}</p>
 
         <form onSubmit={handleSubmit} className="mt-6 space-y-4">
           <label className="block text-sm">
-            <span className="mb-1 block font-medium text-foreground">Email</span>
+            <span className="mb-1 block font-medium text-foreground">{t("email")}</span>
             <input
               type="email"
               required
@@ -64,7 +68,7 @@ function LoginForm() {
           </label>
 
           <label className="block text-sm">
-            <span className="mb-1 block font-medium text-foreground">Heslo</span>
+            <span className="mb-1 block font-medium text-foreground">{t("password")}</span>
             <input
               type="password"
               required
@@ -83,14 +87,14 @@ function LoginForm() {
             disabled={isSubmitting}
             className="w-full rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-60"
           >
-            {isSubmitting ? "Chvíľu strpenia…" : "Prihlásiť sa"}
+            {isSubmitting ? t("submitting") : t("submit")}
           </button>
         </form>
 
         <p className="mt-4 text-center text-sm text-muted-foreground">
-          Nemáš účet?{" "}
+          {t("noAccount")}{" "}
           <Link href="/signup" className="text-primary hover:underline">
-            Vytvor si ho
+            {t("createOne")}
           </Link>
         </p>
       </div>

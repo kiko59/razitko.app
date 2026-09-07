@@ -4,6 +4,7 @@ import path from "path";
 import { PDFDocument, rgb, type PDFFont } from "pdf-lib";
 import fontkit from "@pdf-lib/fontkit";
 import { createClient } from "@/lib/supabase/server";
+import { getApiTranslator } from "@/lib/i18n-server";
 import type { TransportDocumentData } from "@/lib/types";
 
 export const runtime = "nodejs";
@@ -39,9 +40,10 @@ function wrapText(
 }
 
 export async function GET(req: NextRequest) {
+  const t = await getApiTranslator();
   const id = req.nextUrl.searchParams.get("id");
   if (!id) {
-    return NextResponse.json({ error: "Chýba parameter 'id'." }, { status: 400 });
+    return NextResponse.json({ error: t("errors.missingIdParam") }, { status: 400 });
   }
 
   const supabase = createClient();
@@ -50,7 +52,7 @@ export async function GET(req: NextRequest) {
   } = await supabase.auth.getUser();
 
   if (!user) {
-    return NextResponse.json({ error: "Nie si prihlásený." }, { status: 401 });
+    return NextResponse.json({ error: t("errors.notLoggedIn") }, { status: 401 });
   }
 
   const { data: record, error } = await supabase
@@ -61,7 +63,7 @@ export async function GET(req: NextRequest) {
     .single();
 
   if (error || !record) {
-    return NextResponse.json({ error: "Dokument sa nenašiel." }, { status: 404 });
+    return NextResponse.json({ error: t("errors.documentNotFound") }, { status: 404 });
   }
 
   const docData = record.data as TransportDocumentData;

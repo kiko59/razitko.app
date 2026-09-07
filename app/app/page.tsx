@@ -1,10 +1,12 @@
 import { redirect } from "next/navigation";
+import { getTranslations } from "next-intl/server";
 import { createClient } from "@/lib/supabase/server";
 import Header from "@/components/Header";
 import HomeClient from "@/components/HomeClient";
 import { isPlanId } from "@/lib/plans";
 
 export default async function AppPage() {
+  const t = await getTranslations("app");
   const supabase = createClient();
   const {
     data: { user },
@@ -29,10 +31,7 @@ export default async function AppPage() {
         plan={plan}
         documentsUsed={profile?.documents_used_this_month ?? 0}
       />
-      <p className="mt-4 text-sm text-muted-foreground">
-        Nahraj prepravný dokument (CMR, BOL, dodací list) a automaticky z
-        neho vyťaž kľúčové údaje.
-      </p>
+      <p className="mt-4 text-sm text-muted-foreground">{t("intro")}</p>
 
       <div className="mt-8">
         <HomeClient />

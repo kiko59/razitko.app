@@ -1,10 +1,14 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
+import { getTranslations } from "next-intl/server";
 import { createClient } from "@/lib/supabase/server";
 import { PLANS, type SubscriptionPlan } from "@/lib/plans";
 import BillingClient from "@/components/BillingClient";
+import LocaleSwitcher from "@/components/LocaleSwitcher";
 
 export default async function BillingPage() {
+  const t = await getTranslations("billing");
+  const tSignup = await getTranslations("signup");
   const supabase = createClient();
   const {
     data: { user },
@@ -25,29 +29,34 @@ export default async function BillingPage() {
 
   return (
     <main className="mx-auto max-w-lg px-4 py-16">
-      <Link href="/app" className="text-sm text-primary hover:underline">
-        ← Späť do appky
-      </Link>
+      <div className="flex items-center justify-between">
+        <Link href="/app" className="text-sm text-primary hover:underline">
+          {t("back")}
+        </Link>
+        <LocaleSwitcher />
+      </div>
 
-      <h1 className="mt-4 text-2xl font-semibold text-foreground">Predplatné</h1>
+      <h1 className="mt-4 text-2xl font-semibold text-foreground">{t("title")}</h1>
 
       <div className="mt-6 rounded-lg border border-border bg-card p-6">
         {planConfig ? (
           <>
-            <p className="text-sm text-muted-foreground">Aktuálny plán</p>
+            <p className="text-sm text-muted-foreground">{t("currentPlan")}</p>
             <p className="text-lg font-semibold text-foreground">
-              {planConfig.name} — {planConfig.priceEur} € / mesiac
+              {planConfig.name} — {tSignup("perMonth", { price: planConfig.priceEur })}
             </p>
             <p className="mt-2 text-sm text-muted-foreground">
-              {profile?.documents_used_this_month ?? 0} /{" "}
-              {planConfig.monthlyLimit ?? "∞"} dokumentov využitých tento mesiac
+              {t("usage", {
+                used: profile?.documents_used_this_month ?? 0,
+                limit: planConfig.monthlyLimit ?? "∞",
+              })}
             </p>
           </>
         ) : (
           <p className="text-sm text-muted-foreground">
-            Nemáš aktívne predplatné.{" "}
+            {t("noPlan")}{" "}
             <Link href="/pricing" className="text-primary hover:underline">
-              Vyber si plán
+              {t("choosePlan")}
             </Link>
             .
           </p>

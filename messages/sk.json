@@ -1,0 +1,238 @@
+{
+  "nav": {
+    "pricing": "Cenník",
+    "login": "Prihlásiť sa",
+    "tryFree": "Vyskúšať zdarma"
+  },
+  "landing": {
+    "eyebrow": "Pre dispečerov a prepravné firmy",
+    "heading": "Ešte stále prepisuješ CMR večer?",
+    "subheading": "Razítko prečíta CMR, BOL aj dodacie listy za pár sekúnd. Stačí nahrať sken alebo fotku z telefónu a AI vytiahne všetky polia pripravené na uloženie alebo export.",
+    "ctaPrimary": "Vyskúšať zdarma",
+    "ctaSecondary": "Už máš účet? Prihlás sa →",
+    "demo": {
+      "eyebrow": "Ukážka extrakcie",
+      "heading": "Sken vľavo, dáta vpravo — bez prepisovania.",
+      "inputLabel": "Vstup",
+      "inputTitle": "Naskenovaný CMR / dodací list",
+      "inputPlaceholder": "Ukážka — statický náhľad, žiadny reálny súbor.",
+      "outputLabel": "Extrahované polia",
+      "outputTitle": "Kľúčové polia pripravené na uloženie.",
+      "fields": {
+        "sender": "ODOSIELATEĽ",
+        "recipient": "PRÍJEMCA",
+        "weight": "VÁHA",
+        "reference": "REFERENČNÉ ČÍSLO",
+        "loadingDate": "DÁTUM NAKLÁDKY",
+        "unloadingPlace": "MIESTO VYKLÁDKY"
+      }
+    },
+    "howItWorks": {
+      "eyebrow": "Ako to funguje",
+      "heading": "Tri kroky od fotky CMR po hotové dáta",
+      "step1Label": "Krok 1",
+      "step1Title": "Odfotíš / nahráš CMR",
+      "step1Body": "Screenshot, scan alebo fotka z telefónu — Razítko príjme čokoľvek, čo dostaneš od vodiča.",
+      "step2Label": "Krok 2",
+      "step2Title": "Razítko vyextrahuje polia",
+      "step2Body": "Claude AI vytiahne odosielateľa, príjemcu, váhu, referenčné číslo aj miesta nakládky a vykládky do upraviteľného náhľadu.",
+      "step3Label": "Krok 3",
+      "step3Title": "Uložíš a stiahneš PDF alebo JSON",
+      "step3Body": "Skontrolované dáta pošleš do účtovníctva alebo TMS — cez PDF, JSON export, alebo priamo cez REST API na Fleet a Pro pláne."
+    },
+    "ctaSection": {
+      "heading": "Vyskúšaj Razítko zadarma",
+      "subheading": "Vyber si plán a začni šetriť čas hneď dnes.",
+      "primary": "Vyskúšať zdarma",
+      "secondary": "Pozrieť cenník →"
+    },
+    "footer": {
+      "faq": "FAQ",
+      "pricing": "Cenník",
+      "login": "Prihlásiť sa"
+    }
+  },
+  "pricing": {
+    "eyebrow": "Cenník",
+    "heading": "Solo, Fleet alebo Pro — CMR extrakcia pre každú flotilu.",
+    "subheading": "Tri plány pre jeden CMR sken, hromadný upload aj API integráciu. Ceny v EUR, mesačne, bez DPH. Vyber si podľa veľkosti flotily — kedykoľvek môžeš zmeniť alebo zrušiť.",
+    "faq": {
+      "eyebrow": "FAQ k plánom",
+      "heading": "Odpovede pred výberom plánu",
+      "q1": "Kde sú moje dáta uložené a kto k nim má prístup?",
+      "a1": "Dokumenty a extrahované dáta sú uložené v Supabase (PostgreSQL + Storage). Vďaka Row Level Security vidí každý používateľ výhradne svoje vlastné dokumenty — nikto iný, ani v rámci rovnakého plánu.",
+      "q2": "Ktoré jazyky extrakcia podporuje?",
+      "a2": "Solo pokrýva slovenčinu, češtinu a angličtinu. Fleet pridáva nemčinu a francúzštinu. Pro podporuje všetky aktuálne jazyky vrátane early-access k novým.",
+      "q3": "Akú presnosť môžem čakať hneď od prvého dňa?",
+      "a3": "Extrakcia beží na modeli Claude s vysokou presnosťou pri čitateľných skenoch a fotkách. Neisté alebo nečitateľné polia extrakcia označí a necháva na doplnenie v editovateľnom formulári pred uložením.",
+      "q4": "Aký support patrí ku každému plánu?",
+      "a4": "Solo má e-mailový support na best-effort báze. Fleet garantuje odpoveď do 24 hodín. Pro má dedikovaný kontakt a asistovaný onboarding."
+    },
+    "comparison": {
+      "eyebrow": "Porovnanie plánov",
+      "heading": "Solo vs Fleet vs Pro — čo dostanete v každom pláne.",
+      "feature": "Vlastnosť",
+      "rowVolume": "CMR objem (mesačne)",
+      "rowLanguages": "Podporované jazyky",
+      "rowApi": "API prístup",
+      "rowSeats": "Dashboard sedadlá",
+      "rowSupport": "Support",
+      "unlimited": "Neobmedzene",
+      "allLanguages": "Všetky jazyky",
+      "apiYes": "REST API",
+      "apiNo": "Nie"
+    },
+    "perMonthNoVat": "bez DPH / mesiac",
+    "mostPopular": "Najpopulárnejší",
+    "selectPlan": "Vybrať {plan}",
+    "currentPlan": "Tvoj aktuálny plán",
+    "enterprise": "Pre enterprise a individuálne ceny nás kontaktujte.",
+    "plans": {
+      "solo": {
+        "trucks": "1 kamión",
+        "support": "Email, best-effort",
+        "feature1": "1 kamión",
+        "feature2": "60 CMR extrakcií / mesiac",
+        "feature3": "Jazyky: SK, CZ, EN",
+        "feature4": "Bez API prístupu",
+        "feature5": "1 používateľské sedadlo",
+        "feature6": "Support: email, best-effort",
+        "languages": "SK, CZ, EN"
+      },
+      "fleet": {
+        "trucks": "2–5 kamiónov",
+        "support": "Email, odpoveď do 24h",
+        "feature1": "2–5 kamiónov",
+        "feature2": "250 CMR extrakcií / mesiac",
+        "feature3": "Jazyky: SK, CZ, EN, DE, FR",
+        "feature4": "REST API ako voliteľný add-on (60 req/min)",
+        "feature5": "5 používateľských sedadiel",
+        "feature6": "Support: email, odpoveď do 24h",
+        "languages": "SK, CZ, EN, DE, FR"
+      },
+      "pro": {
+        "trucks": "6–10 kamiónov",
+        "support": "Dedikovaný kontakt + onboarding",
+        "feature1": "6–10 kamiónov",
+        "feature2": "Neobmedzený počet extrakcií",
+        "feature3": "Všetky jazyky + early-access k novým funkciám",
+        "feature4": "REST API + webhooky, HMAC podpis, 300 req/min",
+        "feature5": "10 používateľských sedadiel",
+        "feature6": "Support: dedikovaný kontakt + onboarding"
+      }
+    }
+  },
+  "login": {
+    "title": "Vitaj späť",
+    "subtitle": "Prihlás sa do svojho účtu a pokračuj.",
+    "email": "Email",
+    "password": "Heslo",
+    "submit": "Prihlásiť sa",
+    "submitting": "Chvíľu strpenia…",
+    "noAccount": "Nemáš účet?",
+    "createOne": "Vytvor si ho"
+  },
+  "signup": {
+    "titleNew": "Vytvor si účet",
+    "titleLoggedIn": "Dokonči predplatné",
+    "subtitleNew": "Začni s plánom {plan} — vyber si nižšie.",
+    "subtitleLoggedIn": "Pokračuješ ako {email}.",
+    "choosePlan": "Vyber si plán",
+    "perMonth": "{price} € mesačne",
+    "name": "Meno",
+    "email": "Email",
+    "password": "Heslo",
+    "submitNew": "Vytvoriť účet a zaplatiť →",
+    "submitLoggedIn": "Pokračovať na platbu →",
+    "submitting": "Chvíľu strpenia…",
+    "haveAccount": "Už máš účet?",
+    "signIn": "Prihlás sa",
+    "faqLink": "Máte otázky? Pozrite si FAQ →",
+    "confirmEmailTitle": "Skontroluj svoj email",
+    "confirmEmailBody": "Poslali sme ti potvrdzovací odkaz na {email}. Po potvrdení ťa vrátime rovno sem, aby si mohol/a dokončiť platbu za plán {plan}.",
+    "errorUnknown": "Nastala neznáma chyba.",
+    "errorCheckoutFailed": "Nepodarilo sa spustiť platbu."
+  },
+  "billing": {
+    "back": "← Späť do appky",
+    "title": "Predplatné",
+    "currentPlan": "Aktuálny plán",
+    "usage": "{used} / {limit} dokumentov využitých tento mesiac",
+    "noPlan": "Nemáš aktívne predplatné.",
+    "choosePlan": "Vyber si plán",
+    "manage": "Spravovať predplatné",
+    "openingPortal": "Otváram Stripe portál…",
+    "errorUnknown": "Nastala neznáma chyba.",
+    "errorOpenPortalFailed": "Nepodarilo sa otvoriť portál."
+  },
+  "header": {
+    "usage": "{used}/{limit} dokumentov tento mesiac",
+    "signOut": "Odhlásiť sa"
+  },
+  "app": {
+    "intro": "Nahraj prepravný dokument (CMR, BOL, dodací list) a automaticky z neho vyťaž kľúčové údaje."
+  },
+  "upload": {
+    "dragHint": "Presuň sem CMR, BOL alebo dodací list",
+    "clickHint": "alebo klikni pre výber súboru (JPEG, PNG, PDF — max 15 MB)",
+    "extracting": "Spracúvam dokument cez Claude…",
+    "upgradeLink": "Upgradovať plán",
+    "errorUnsupportedType": "Podporované sú len obrázky (JPEG, PNG, GIF, WebP) a PDF.",
+    "errorTooLarge": "Súbor je príliš veľký (max 15 MB).",
+    "errorExtractionFailed": "Extrakcia dát zlyhala.",
+    "errorUnknown": "Nastala neznáma chyba."
+  },
+  "form": {
+    "documentType": "Typ dokumentu",
+    "docTypeCMR": "CMR",
+    "docTypeBOL": "Bill of Lading (BOL)",
+    "docTypeDodaciList": "Dodací list",
+    "docTypeIny": "Iný",
+    "sender": "Odosielateľ",
+    "recipient": "Príjemca",
+    "nameLabel": "Meno / názov",
+    "address": "Adresa",
+    "weight": "Váha (kg)",
+    "referenceNumber": "Referenčné číslo",
+    "loadingDate": "Dátum nakládky",
+    "loadingPlace": "Miesto nakládky",
+    "unloadingPlace": "Miesto vykládky",
+    "notes": "Poznámky",
+    "save": "Uložiť dokument",
+    "saving": "Ukladám…",
+    "saveAgain": "Uložené — uložiť znova",
+    "saved": "Dokument bol uložený.",
+    "errorSaveFailed": "Uloženie zlyhalo.",
+    "errorUnknown": "Nastala neznáma chyba."
+  },
+  "export": {
+    "pdf": "Stiahnuť PDF",
+    "json": "Stiahnuť JSON"
+  },
+  "errors": {
+    "notLoggedIn": "Nie si prihlásený.",
+    "noSubscription": "Nemáš aktívne predplatné.",
+    "limitReached": "Dosiahli ste mesačný limit, upgradujte plán.",
+    "invalidApiKey": "Neplatný API kľúč.",
+    "apiFleetProOnly": "Priamy REST API prístup je dostupný len pre plány Fleet a Pro. Prihlás sa cez webovú appku alebo si upgraduj plán.",
+    "missingFile": "Chýba súbor v poli 'file'.",
+    "unsupportedFileType": "Nepodporovaný typ súboru.",
+    "fileTooLarge": "Súbor je príliš veľký (max 15 MB).",
+    "extractionFailed": "Extrakcia dát cez Claude zlyhala. Skús to znova.",
+    "missingFileOrData": "Chýba súbor alebo dáta dokumentu.",
+    "invalidDocumentData": "Neplatné dáta dokumentu.",
+    "storageUploadFailed": "Nahratie súboru do úložiska zlyhalo.",
+    "dbInsertFailed": "Uloženie záznamu do databázy zlyhalo.",
+    "documentsListFailed": "Načítanie dokumentov zlyhalo.",
+    "documentNotFound": "Dokument sa nenašiel.",
+    "missingIdParam": "Chýba parameter 'id'.",
+    "invalidPlan": "Neplatný plán.",
+    "missingPriceConfig": "Chýba STRIPE_PRICE_{plan} v konfigurácii servera.",
+    "stripeNoUrl": "Stripe nevrátil URL pre checkout.",
+    "checkoutCreateFailed": "Nepodarilo sa vytvoriť Stripe checkout: {message}",
+    "noSubscriptionToManage": "Nemáš zatiaľ žiadne predplatné na správu.",
+    "webhookConfigMissing": "Chýba webhook konfigurácia.",
+    "invalidSignature": "Neplatný podpis.",
+    "portalCreateFailed": "Nepodarilo sa otvoriť Stripe portál: {message}"
+  }
+}

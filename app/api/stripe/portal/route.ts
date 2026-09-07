@@ -2,10 +2,13 @@ import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { getStripe } from "@/lib/stripe";
+import { getApiTranslator, getLocaleFromCookies } from "@/lib/i18n-server";
 
 export const runtime = "nodejs";
 
 export async function POST(req: NextRequest) {
+  const t = await getApiTranslator();
+
   try {
     const supabase = createClient();
     const {
@@ -13,7 +16,7 @@ export async function POST(req: NextRequest) {
     } = await supabase.auth.getUser();
 
     if (!user) {
-      return NextResponse.json({ error: "Nie si prihlásený." }, { status: 401 });
+      return NextResponse.json({ error: t("errors.notLoggedIn") }, { status: 401 });
     }
 
     const admin = createAdminClient();
@@ -25,7 +28,7 @@ export async function POST(req: NextRequest) {
 
     if (!profile?.stripe_customer_id) {
       return NextResponse.json(
-        { error: "Nemáš zatiaľ žiadne predplatné na správu." },
+        { error: t("errors.noSubscriptionToManage") },
         { status: 400 },
       );
     }
@@ -34,14 +37,15 @@ export async function POST(req: NextRequest) {
     const session = await stripe.billingPortal.sessions.create({
       customer: profile.stripe_customer_id,
       return_url: `${req.nextUrl.origin}/billing`,
+      locale: getLocaleFromCookies(),
     });
 
     return NextResponse.json({ url: session.url });
   } catch (err) {
     console.error("Stripe billing portal session creation failed:", err);
-    const message = err instanceof Error ? err.message : "Neznáma chyba.";
+    const message = err instanceof Error ? err.message : "Unknown error.";
     return NextResponse.json(
-      { error: `Nepodarilo sa otvoriť Stripe portál: ${message}` },
+      { error: t("errors.portalCreateFailed", { message }) },
       { status: 500 },
     );
   }
